@@ -270,7 +270,7 @@ async def trigger_ingestion():
         raise HTTPException(status_code=500, detail="Neither OPENAI_API_KEY nor GEMINI_API_KEY nor GROQ_API_KEY configured in backend .env")
         
     resume_path = get_resume_path()
-    processed_dir = os.path.join(workspace_dir, "data", "processed")
+    processed_dir = os.path.join(os.path.dirname(resume_path), "processed")
     
     # Run ingestion script functions
     try:
