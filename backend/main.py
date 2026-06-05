@@ -2,7 +2,7 @@ import os
 import json
 import asyncio
 from typing import List, Dict, Any, Optional
-from fastapi import FastAPI, HTTPException, Request, Depends
+from fastapi import FastAPI, HTTPException, Request, Depends, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, JSONResponse
 from pydantic import BaseModel
@@ -250,13 +250,42 @@ def get_resume_path() -> str:
     workspace_dir = os.path.dirname(backend_dir)
     return os.path.join(workspace_dir, "data", "resume.pdf")
 
+def background_ingestion_task():
+    try:
+        resume_path = get_resume_path()
+        processed_dir = os.path.join(os.path.dirname(resume_path), "processed")
+        print("[Background Sync] Starting auto-sync ingestion in background...")
+        ingest_data(resume_path, processed_dir)
+        build_vector_store(processed_dir)
+        print("[Background Sync] Auto-sync ingestion completed successfully.")
+    except Exception as e:
+        print(f"[Background Sync Error] {e}")
+
 @app.get("/api/status")
-async def get_status():
+async def get_status(background_tasks: BackgroundTasks):
     """
-    Check availability of resources and keys
+    Check availability of resources and keys, and trigger auto-sync in the background if stale.
     """
     resume_path = get_resume_path()
     db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "database")
+    vectors_file = os.path.join(db_path, "vectors.json")
+    
+    # Auto-sync logic (throttle to once every 15 minutes to prevent GitHub rate limits)
+    should_sync = False
+    if not os.path.exists(vectors_file):
+        should_sync = True
+    else:
+        try:
+            import time
+            mtime = os.path.getmtime(vectors_file)
+            age_seconds = time.time() - mtime
+            if age_seconds > 900:  # 15 minutes
+                should_sync = True
+        except Exception:
+            pass
+            
+    if should_sync:
+        background_tasks.add_task(background_ingestion_task)
     
     active_tunnel_url = None
     tunnel_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tunnel_url.txt")
@@ -272,7 +301,7 @@ async def get_status():
         "github_configured": os.getenv("GITHUB_TOKEN") is not None,
         "cal_configured": os.getenv("CAL_API_KEY") is not None,
         "resume_uploaded": os.path.exists(resume_path),
-        "vector_db_built": os.path.exists(os.path.join(db_path, "vectors.json")),
+        "vector_db_built": os.path.exists(vectors_file),
         "active_tunnel_url": active_tunnel_url
     }
 
