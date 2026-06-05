@@ -208,7 +208,12 @@ async def safe_chat_completion(model, messages, stream=False, temperature=0.3, t
 
 async def handle_tool_execution(name: str, arguments: str) -> Dict[str, Any]:
     try:
-        args = json.loads(arguments) if isinstance(arguments, str) else arguments
+        if isinstance(arguments, str) and arguments.strip():
+            args = json.loads(arguments)
+        else:
+            args = arguments or {}
+        if not isinstance(args, dict):
+            args = {}
     except Exception:
         args = {}
     
