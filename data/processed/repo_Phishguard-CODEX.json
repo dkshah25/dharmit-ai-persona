@@ -1,0 +1,57 @@
+{
+  "source": "github",
+  "repository": "Phishguard-CODEX",
+  "url": "https://github.com/dkshah25/Phishguard-CODEX",
+  "description": "",
+  "languages": [],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2026-06-01T19:47:55Z",
+    "updated_at": "2026-06-01T19:47:55Z"
+  },
+  "commits": [
+    {
+      "sha": "1e63f55",
+      "author": "Ishaan Chand",
+      "date": "2026-04-28T22:19:27Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "a341ff7",
+      "author": "Ishaan Chand",
+      "date": "2026-04-28T22:14:06Z",
+      "message": "Add requirements for FastAPI and data processing libraries"
+    },
+    {
+      "sha": "cde83a3",
+      "author": "Ishaan Chand",
+      "date": "2026-04-28T22:13:02Z",
+      "message": "Update README by removing author and license sections\n\nRemoved author list and license details from README."
+    },
+    {
+      "sha": "3ea68c9",
+      "author": "Ishaan Chand",
+      "date": "2026-04-28T22:11:49Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "70b9619",
+      "author": "Ishaan Chand",
+      "date": "2026-04-28T22:07:26Z",
+      "message": "Initial commit"
+    }
+  ],
+  "readme": "# PhishGuard: Hybrid Phishing Detection System\n\n## Overview\n\nPhishGuard is a real-time phishing detection system combining machine learning, threat intelligence, and LLM-based reasoning, deployed as a browser extension with a local backend.\n\nIt evaluates websites dynamically and assigns a risk score, enabling proactive detection of phishing attacks beyond traditional blacklist methods.\n\n---\n\n## Problem Statement\n\nModern phishing websites:\n- mimic legitimate platforms (banks, UPI, login portals)\n- use HTTPS and valid SSL certificates\n- bypass blacklist-based security systems\n\nAs highlighted in the project pitch deck :contentReference[oaicite:0]{index=0}, existing systems fail against **zero-day phishing attacks**.\n\n---\n\n## Solution\n\nPhishGuard performs **multi-layer analysis**:\n\n1. URL structural analysis  \n2. SSL & domain intelligence  \n3. Threat intelligence lookup  \n4. LLM-based contextual reasoning  \n\nAll combined into a **single risk score**.\n\n---\n\n## System Architecture\n\nBrowser Extension\n\u2193\nContent Script (URL capture)\n\u2193\nBackground Script \u2192 Backend API (FastAPI)\n\u2193\n| 1. Structural ML Model |\n| 2. SSL/Domain ML Model |\n| 3. Threat Intel (URLScan API) |\n| 4. LLM Analysis (Groq API) |\n    \u2193\n\nRisk Scoring Engine\n\u2193\nResponse \u2192 Extension UI\n\n\n---\n\n## Key Components\n\n### 1. Browser Extension (Frontend)\n\n- Monitors links in real-time\n- Highlights risky URLs on hover :contentReference[oaicite:1]{index=1}  \n- Blocks unsafe links before navigation\n- Displays risk score in popup UI :contentReference[oaicite:2]{index=2}  \n\n---\n\n### 2. Backend API (FastAPI)\n\n- Endpoint: `/analyze`\n- Processes URLs and returns:\n  - risk score\n  - classification (Safe / Suspicious / Unsafe)\n  - explanation\n\nCore pipeline :contentReference[oaicite:3]{index=3}:\n- Feature extraction\n- Model inference\n- API-based intelligence\n- LLM reasoning\n- Final scoring\n\n---\n\n### 3. Machine Learning Models\n\n#### Structural Model\n- Features:\n  - URL length, dots, hyphens, digits, etc. :contentReference[oaicite:4]{index=4}  \n- Model: Logistic Regression :contentReference[oaicite:5]{index=5}  \n\n#### SSL / Domain Model\n- Features:\n  - domain age, DNS, WHOIS, HTTPS :contentReference[oaicite:6]{index=6}  \n- Model: Logistic Regression :contentReference[oaicite:7]{index=7}  \n\n---\n\n### 4. Threat Intelligence Layer\n\n- Uses URLScan API\n- Detects known malicious domains :contentReference[oaicite:8]{index=8}  \n\n---\n\n### 5. LLM-Based Analysis\n\n- Uses Groq API (LLaMA)\n- Provides:\n  - phishing likelihood\n  - human-readable explanation :contentReference[oaicite:9]{index=9}  \n\n---\n\n### 6. Scoring Engine\n\nFinal score calculation :contentReference[oaicite:10]{index=10}:\n\n\nScore = 0.35 * Structural + 0.15 * SSL + 0.5 * Threat Intel\n\n\nClassification:\n- Safe: 0 \u2013 0.30  \n- Suspicious: 0.30 \u2013 0.65  \n- Unsafe: > 0.65  \n\n---\n\n## Features\n\n- Real-time phishing detection\n- Multi-layer hybrid analysis\n- Browser-level protection\n- Local processing (privacy-first)\n- Explainable AI outputs\n\n---\n\n## How to Run\n\n### 1. Backend Setup\n\n\npip install fastapi uvicorn scikit-learn pandas numpy requests python-whois dnspython\n\n\nRun backend:\n\n\nuvicorn main:app --reload\n\n\n---\n\n### 2. Train Models\n\n\npython train_structural_model.py\npython train_ssl_model.py\n\n\n---\n\n### 3. Load Chrome Extension\n\n- Open Chrome \u2192 Extensions \u2192 Developer Mode\n- Load unpacked extension\n- Select extension folder\n\n---\n\n## Example Workflow\n\n1. User hovers over a link  \n2. Extension sends URL for analysis  \n3. Backend evaluates risk  \n4. Link is:\n   - highlighted (safe/suspicious/unsafe)\n   - optionally blocked  \n\n---\n\n## Limitations\n\n- Depends on external APIs (URLScan, LLM)\n- Logistic Regression (basic model)\n- Limited dataset scope\n- No adversarial robustness\n\n---\n\n## Future Improvements\n\n- Deep learning models (transformers)\n- Real-time phishing dataset updates\n- Browser-independent deployment\n- Edge deployment (no backend)\n- Advanced domain reputation systems\n\n---\n\n## Author\n\n- Ishaan Chand\n- Dharmit Shah\n- Akul Agrawal\n- Devansh Singh\n\n---\n\n## License\n\nFor academic and research use\n\n---\n",
+  "metadata": {
+    "source": "github",
+    "repository": "Phishguard-CODEX",
+    "url": "https://github.com/dkshah25/Phishguard-CODEX",
+    "languages": "None specified",
+    "topics": ""
+  }
+}

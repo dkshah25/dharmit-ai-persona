@@ -1,0 +1,66 @@
+{
+  "source": "github",
+  "repository": "PRODIGY_GA_05",
+  "url": "https://github.com/dkshah25/PRODIGY_GA_05",
+  "description": "",
+  "languages": [
+    "Jupyter Notebook",
+    "Python"
+  ],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2025-07-23T07:06:37Z",
+    "updated_at": "2025-07-25T11:23:54Z"
+  },
+  "commits": [
+    {
+      "sha": "464f4a9",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-23T07:12:45Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "99c510e",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-23T07:12:19Z",
+      "message": "Rename stylized_result (1).jpg to stylized_res.jpg"
+    },
+    {
+      "sha": "ee76219",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-23T07:10:40Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "2f8a489",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-23T07:10:02Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "83c3253",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-23T07:08:45Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "e46d18e",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-23T07:06:37Z",
+      "message": "Initial commit"
+    }
+  ],
+  "readme": "# Neural Style Transfer \ud83c\udfa8\ud83e\udde0\n\nThis project is part of the Prodigy InfoTech internship. It implements **Neural Style Transfer** using TensorFlow Hub on Google Colab.\n\n## \ud83d\udccc What is Neural Style Transfer?\n\nNST is a technique that takes two images \u2014 a **content image** and a **style image** \u2014 and blends them together so that the output image looks like the content image painted in the style of the style image.\n\n---\n\n## \ud83e\uddea Experiments\n\n### \u2728 Style: Starry Night | Content: City Skyline\n![Starry City](stylized_result.jpg)\n\n### \ud83c\udf0a Style: The Great Wave | Content: Mt. Fuji\n![Fuji Wave](stylized_res.jpg)\n\n---\n\n## \ud83d\udee0 Tools & Libraries\n\n- Python\n- TensorFlow\n- TensorFlow Hub\n- Google Colab\n- PIL\n- NumPy\n\n---\n\n## \ud83d\udcc1 Files\n\n| File | Description |\n|------|-------------|\n| `colab_notebook.ipynb` | Google Colab notebook with code |\n| `content.jpg` / `style.jpg` | Images used |\n| `stylized_output.jpg` | Result after style transfer |\n\n---\n\n## \ud83e\udd1d Credits\n\nInternship project under **Prodigy InfoTech**  \nCoded & debugged by: **Dharmit Shah**\n",
+  "metadata": {
+    "source": "github",
+    "repository": "PRODIGY_GA_05",
+    "url": "https://github.com/dkshah25/PRODIGY_GA_05",
+    "languages": "Jupyter Notebook, Python",
+    "topics": ""
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "source": "github",
+  "repository": "museum_gsa",
+  "url": "https://github.com/dkshah25/museum_gsa",
+  "description": "",
+  "languages": [
+    "TypeScript",
+    "Python",
+    "JavaScript",
+    "CSS"
+  ],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2026-06-01T19:42:22Z",
+    "updated_at": "2026-06-01T19:42:22Z"
+  },
+  "commits": [
+    {
+      "sha": "787ac74",
+      "author": "Ishaan Chand",
+      "date": "2026-02-26T14:45:54Z",
+      "message": "Update concurrently version in package.json"
+    },
+    {
+      "sha": "290409c",
+      "author": "Ishaan Chand",
+      "date": "2026-02-26T14:44:15Z",
+      "message": "Add Suspense for loading state in Chat component\n\nWrap ChatContent in a Suspense component for loading state."
+    },
+    {
+      "sha": "c8a595f",
+      "author": "Ishaan Chand",
+      "date": "2026-02-26T14:43:01Z",
+      "message": "Update dev script to use concurrently with reload"
+    },
+    {
+      "sha": "8d777b7",
+      "author": "Ishaan Chand",
+      "date": "2026-02-26T13:22:43Z",
+      "message": "Update package.json"
+    },
+    {
+      "sha": "2590f3d",
+      "author": "Ishaan Chand",
+      "date": "2026-02-26T12:11:17Z",
+      "message": "Update package.json"
+    },
+    {
+      "sha": "3b42f54",
+      "author": "Ishaan Chand",
+      "date": "2026-02-26T12:07:24Z",
+      "message": "Update finalrag.py"
+    },
+    {
+      "sha": "aa2588a",
+      "author": "Ishaan Chand",
+      "date": "2026-02-26T12:00:02Z",
+      "message": "Update API endpoint and message handling in chat"
+    },
+    {
+      "sha": "7dc6088",
+      "author": "Ishaan Chand",
+      "date": "2026-02-26T11:58:23Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "4c5306d",
+      "author": "Ishaan Chand",
+      "date": "2026-02-26T11:57:14Z",
+      "message": "Refactor finalrag.py to use a function for RAG"
+    },
+    {
+      "sha": "02ce883",
+      "author": "Ishaan Chand",
+      "date": "2026-02-26T11:55:36Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "a977adf",
+      "author": "Ishaan Chand",
+      "date": "2026-02-26T11:54:25Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "501548f",
+      "author": "Samarth Bhadane",
+      "date": "2026-02-26T08:20:00Z",
+      "message": "feat: Implement chat feature with historical figures and add monuments and museums pages\n\n- Added chat functionality to interact with historical figures.\n- Created a new page for famous monuments with details and images.\n- Added a page for important museums showcasing their specialties.\n- Updated layout to include a sidebar for navigation.\n- Implemented a timeline page to display significant historical events.\n- Set up backend API for chat responses using Flask and ChromaDB.\n- Included instructions for backend setup in README.\n- Enhanced UI with improved styling and responsiveness."
+    },
+    {
+      "sha": "b1fb232",
+      "author": "Samarth Bhadane",
+      "date": "2026-02-26T05:23:04Z",
+      "message": "init"
+    }
+  ],
+  "readme": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).\n\n## Getting Started\n\nFirst, run the development server:\n\n```bash\nnpm run dev\n# or\nyarn dev\n# or\npnpm dev\n# or\nbun dev\n```\n\nOpen [http://localhost:3000](http://localhost:3000) with your browser to see the result.\n\nYou can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.\n\nThis project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.\n\n## Learn More\n\nTo learn more about Next.js, take a look at the following resources:\n\n- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.\n- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.\n\nYou can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!\n\n## Deploy on Vercel\n\nThe easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.\n\nCheck out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.\n",
+  "metadata": {
+    "source": "github",
+    "repository": "museum_gsa",
+    "url": "https://github.com/dkshah25/museum_gsa",
+    "languages": "TypeScript, Python, JavaScript, CSS",
+    "topics": ""
+  }
+}

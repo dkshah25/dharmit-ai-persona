@@ -1,0 +1,59 @@
+{
+  "source": "github",
+  "repository": "firstMLproject",
+  "url": "https://github.com/dkshah25/firstMLproject",
+  "description": "",
+  "languages": [
+    "Jupyter Notebook"
+  ],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2025-12-17T11:21:59Z",
+    "updated_at": "2025-12-17T11:28:39Z"
+  },
+  "commits": [
+    {
+      "sha": "9415bab",
+      "author": "DHARMIT SHAH",
+      "date": "2025-12-17T11:28:36Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "10390bd",
+      "author": "DHARMIT SHAH",
+      "date": "2025-12-17T11:27:54Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "00c100d",
+      "author": "DHARMIT SHAH",
+      "date": "2025-12-17T11:24:14Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "1710ff1",
+      "author": "DHARMIT SHAH",
+      "date": "2025-12-17T11:23:33Z",
+      "message": "Revise README for Fuel Efficiency Analysis project\n\nUpdated project title and added detailed sections on dataset, approach, learning rate experiments, results, limitations, and key takeaways."
+    },
+    {
+      "sha": "4832f5b",
+      "author": "DHARMIT SHAH",
+      "date": "2025-12-17T11:21:59Z",
+      "message": "Initial commit"
+    }
+  ],
+  "readme": "# Fuel Efficiency Analysis using Linear Regression\n\nThis project implements **linear regression** using **gradient descent**\nto study the relationship between vehicle weight and fuel efficiency (MPG).\n\nThe objective of this project is **conceptual understanding** of optimization behavior,\nnot achieving high predictive accuracy.\n\n---\n\n## Dataset\n\n- **Auto MPG Dataset** from the UCI Machine Learning Repository  \n- Each row represents a car with attributes such as:\n  - weight\n  - horsepower\n  - displacement\n  - cylinders\n  - acceleration\n  - fuel efficiency (MPG)\n- Missing values were handled by removing incomplete rows\n\n---\n\n## Approach\n\n- Implemented linear regression **without using machine learning libraries**\n- Used **gradient descent** to optimize model parameters\n- Applied **feature normalization** to ensure stable convergence\n- Split data into training and testing sets to evaluate generalization\n\n---\n\n## Learning Rate Experiment\n\nTo understand gradient descent behavior, different learning rates were tested:\n\n- **Learning rate = 0.1**  \n  Resulted in oscillation/divergence due to overshooting the minimum of the loss surface\n\n- **Learning rate = 0.01**  \n  Converged smoothly and provided stable optimization\n\n- **Learning rate = 0.001**  \n  Converged very slowly but remained stable due to very small parameter updates\n\nThis experiment demonstrates the trade-off between **convergence speed** and\n**optimization stability**.\n\n---\n\n## Results and Observations\n\n- Vehicle weight shows a clear negative relationship with fuel efficiency\n- The linear model captures the overall trend but performs poorly on many individual cases\n- This highlights the limitations of linear regression on complex real-world data\n\n---\n\n## Limitations and Future Work\n\n- Only a single feature (vehicle weight) was used\n- Fuel efficiency depends on many interacting variables\n- Possible future extensions:\n  - Multi-feature linear regression (from scratch)\n  - Polynomial regression\n  - Non-linear models\n\n---\n\n## Key Takeaways\n\n- Feature scaling is critical for stable gradient descent\n- Learning rate selection directly affects convergence behavior\n- Simple models are useful for understanding trends but have practical limitations\n- The model is implemented without using machine learning libraries, focusing on understanding gradient descent and optimization behaviour.\n\n---\n\n## Author\n\n**Dharmit Shah**\n",
+  "metadata": {
+    "source": "github",
+    "repository": "firstMLproject",
+    "url": "https://github.com/dkshah25/firstMLproject",
+    "languages": "Jupyter Notebook",
+    "topics": ""
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "source": "github",
+  "repository": "ScholarMind",
+  "url": "https://github.com/dkshah25/ScholarMind",
+  "description": "",
+  "languages": [
+    "Python",
+    "TypeScript",
+    "CSS",
+    "JavaScript"
+  ],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2026-05-31T20:06:34Z",
+    "updated_at": "2026-06-04T17:43:38Z"
+  },
+  "commits": [
+    {
+      "sha": "2699551",
+      "author": "dkshah25",
+      "date": "2026-06-01T09:23:19Z",
+      "message": "fix: align test script print statements with Pydantic database models"
+    },
+    {
+      "sha": "fe85520",
+      "author": "dkshah25",
+      "date": "2026-06-01T09:13:59Z",
+      "message": "fix: resolve TrendForecast novel_elements attribute error in test script"
+    },
+    {
+      "sha": "d0b36e8",
+      "author": "dkshah25",
+      "date": "2026-06-01T09:10:31Z",
+      "message": "feat: migrate research pipeline to local Ollama (Qwen3:8B + Nomic Embed)"
+    },
+    {
+      "sha": "29e4355",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-31T21:42:28Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "d3ba77d",
+      "author": "dkshah25",
+      "date": "2026-05-31T20:52:24Z",
+      "message": "perf: reduce staggering delays to 1 second for ultra-fast agent executions"
+    },
+    {
+      "sha": "254d80f",
+      "author": "dkshah25",
+      "date": "2026-05-31T20:51:00Z",
+      "message": "fix: change default model to gemini-2.5-flash to completely avoid pro rate limits and double-try 429 errors on free keys"
+    },
+    {
+      "sha": "1b14d4e",
+      "author": "dkshah25",
+      "date": "2026-05-31T20:46:58Z",
+      "message": "feat: stagger agent executions with time.sleep(4) to stay below free-tier Gemini API 15 RPM rate limits"
+    },
+    {
+      "sha": "11ed639",
+      "author": "dkshah25",
+      "date": "2026-05-31T20:44:15Z",
+      "message": "feat: upgrade agent fallback stubs to return high-rigor academic content"
+    },
+    {
+      "sha": "fdcf59e",
+      "author": "dkshah25",
+      "date": "2026-05-31T20:32:20Z",
+      "message": "fix: update pydantic pinning to satisfy google-genai requirements"
+    },
+    {
+      "sha": "0b8cb4e",
+      "author": "dkshah25",
+      "date": "2026-05-31T20:30:59Z",
+      "message": "fix: remove unused supabase package from backend requirements to resolve dependency conflict"
+    },
+    {
+      "sha": "c0ffaff",
+      "author": "dkshah25",
+      "date": "2026-05-31T20:23:07Z",
+      "message": "docs: add deployment guide for Supabase, Render, and Vercel"
+    },
+    {
+      "sha": "6c2a5bf",
+      "author": "dkshah25",
+      "date": "2026-05-31T20:18:29Z",
+      "message": "feat: initial ScholarMind research intelligence platform"
+    }
+  ],
+  "readme": "# \ud83e\udde0 ScholarMind\n\n> **Advanced Multi-Agent Research Intelligence Platform**  \n> *Automating literature synthesis, contradiction analysis, research gap discovery, peer debate simulation, testable hypothesis generation, empirical experiment planning, and publication drafting.*\n\n---\n\n## \ud83c\udf1f Hero Highlights & Rigor\n\nScholarMind is not just another \"RAG research assistant.\" It is a comprehensive **Research Operating System** designed to enforce academic rigor and scientific traceability:\n\n- **100% Traceable Lineage**: Click on any generated hypothesis and visually trace it back: `Hypothesis` $\\rightarrow$ `Supporting Gap` $\\rightarrow$ `Supporting Findings` $\\rightarrow$ `Source Paper (and the exact verbatim passage)`.\n- **Peer-Review Debate Arena**: Simulates authentic double-round academic reviews between a critical *Reviewer Agent* and a defending *Researcher Agent*.\n- **Methodological Contradiction Detection**: Automatically isolates opposing empirical claims, parameter differences, and theoretical conflicts between papers, providing a granular root-cause analysis.\n- **Reproducibility Audit Warning**: Scrapes generated experiments to audit variable completeness, alerting researchers of missing dataset controls or protocol specifics before drafting.\n\n---\n\n## \ud83d\udcd0 Architecture & Multi-Agent Graph\n\nScholarMind coordinates a highly decoupled network of specialized LLM agents using **LangGraph / Python coordinator**:\n\n```mermaid\nflowchart TD\n\n    A[Academic PDF Uploads] --> B[PDF Parser]\n    B --> C[Metadata Extraction]\n    B --> D[Text Chunking]\n    D --> E[Embedding Generation]\n\n    E --> F[Vector Layer]\n\n    F --> F1[ChromaDB]\n    F --> F2[Pure Python Cosine Engine Fallback]\n\n    C --> G[SQLite Session Store]\n    C --> H[Paper Repository]\n\n    H --> I[Coordinator]\n\n    subgraph Multi-Agent Research Pipeline\n\n        I --> J[Research Agent]\n        J --> K[Literature Agent]\n\n        K --> L[Contradiction Agent]\n        K --> M[Trend Agent]\n\n        L --> N[Gap Agent]\n        M --> N\n\n        N --> O[Reviewer Agent]\n\n        O --> P[Debate Arena]\n\n        P --> Q[Hypothesis Agent]\n\n        Q --> R[Experiment Agent]\n\n        R --> S[Publication Agent]\n\n        S --> T[Quality Agent]\n\n    end\n\n    T --> U[Research Session State]\n\n    U --> V[Research Lineage Engine]\n\n    U --> W[Knowledge Graph Engine]\n\n    U --> X[Research Co-Pilot]\n\n    W --> Y[React Flow Graph]\n\n    V --> Z[Traceability Chain]\n\n    Z --> ZA[Hypothesis]\n    ZA --> ZB[Gap]\n    ZB --> ZC[Findings]\n    ZC --> ZD[Source Papers]\n\n    U --> ZE[Benchmark Scores]\n    U --> ZF[Experiment Blueprints]\n    U --> ZG[Publication Drafts]\n    U --> ZH[Debate Transcripts]\n    U --> ZI[Contradiction Reports]\n\n    G --> ZJ[SQLite Persistence]\n    G --> ZK[Supabase Cloud Sync Fallback]\n\n    subgraph Frontend Dashboard\n\n        Y\n        X\n        ZE\n        ZF\n        ZG\n        ZH\n        ZI\n\n    end\n```\n\n---\n\n## \ud83d\udee0\ufe0f Feature Breakdown\n\n### 1. Multi-Agent Pipeline\nRuns a parallelized graph flow analyzing raw PDF extractions. Outlines problems, methodologies, and contributions dynamically.\n\n### 2. Contradiction Detection\nIsolates opposing empirical statements (e.g. *Paper A shows exponential scalability while Paper B reports linear boundaries under high latency*) and drafts technical clash metrics.\n\n### 3. Debate Mode\nPairs the **Researcher Agent** against the **Reviewer Agent** inside an academic log window. Generates challenges, queries, and robust scientific defenses.\n\n### 4. Interactive Co-Pilot Chat\nA sliding drawer workspace chat connected to your SQLite workspace memory. Refines hypotheses, designs baseline models, and queries vector spaces dynamically.\n\n### 5. Research Quality Evaluator & Reproducibility Checker\nScores generated ideas across five metrics (Novelty, Feasibility, Rigor, Reproducibility, Impact) and flags missing control variables or evaluation specifications.\n\n---\n\n## \ud83d\udcbb Tech Stack\n\n### Frontend\n* **Framework**: Next.js 15 (React 19)\n* **Styling**: Tailwind CSS v4 (Harmony HSL Colors, Sleek Dark Mode, and Glassmorphic Panels)\n* **Visualization**: React Flow (Conceptual Knowledge Graph layout mapping)\n\n### Backend\n* **API Framework**: FastAPI (Python 3.14 compatible)\n* **Agent Flow**: Decoupled Python Graph Coordinator\n* **LLM Engine**: Google Gemini API (`gemini-2.5-pro` & `gemini-2.5-flash` dynamic fallbacks)\n\n### Storage & Vector Spaces\n* **Session Storage**: SQLite Local Sync (`scholarmind.db`) with Zero-Dependency Supabase synchronization support\n* **Embeddings**: `text-embedding-004` (3072-dimension dense vectors)\n* **Vector Store**: Cosine Similarity vector database with auto-healing fallback to pure-Python mathematics if standard binaries are missing\n\n---\n\n## \ud83d\ude80 Installation & Quick Setup\n\nFollow these simple steps to spin up ScholarMind in less than 3 minutes:\n\n### 1. Backend Server Setup\nEnsure you have Python 3.10+ installed.\n\n```bash\n# Navigate to the backend folder\ncd backend\n\n# Create and activate a virtual environment\npython -m venv .venv\n# On Windows:\n.venv\\Scripts\\activate\n# On Linux/macOS:\nsource .venv/bin/activate\n\n# Install dependencies\npip install -r requirements.txt\n\n# Create your .env file\ncopy .env.example .env\n\n# Start the FastAPI server\npython -m app.api.main\n```\n*The backend API will start running at `http://127.0.0.1:8000`.*\n\n### 2. Frontend Dashboard Setup\nEnsure you have Node.js 18+ installed.\n\n```bash\n# Navigate to the frontend folder\ncd ../frontend\n\n# Install node dependencies\nnpm install\n\n# Start the development server\nnpm run dev\n```\n*The Next.js dashboard will start running at `http://localhost:3000`.*\n\n---\n\n## \ud83d\udcc2 Repository Structure\n\n```\nScholarMind/\n\u251c\u2500\u2500 backend/            # FastAPI, Database Operations, and LangGraph Agents\n\u251c\u2500\u2500 frontend/           # Next.js 15 Dashboard, React Flow maps, and CSS Panels\n\u251c\u2500\u2500 docs/               # Technical Reports, Architecture details, and PDF documentation\n\u251c\u2500\u2500 .env.example        # Reference environment settings template\n\u251c\u2500\u2500 .gitignore          # Excludes DBs, envs, node_modules, and builds\n\u251c\u2500\u2500 LICENSE             # MIT Open Source License\n\u2514\u2500\u2500 README.md           # Project presentation index\n```\n",
+  "metadata": {
+    "source": "github",
+    "repository": "ScholarMind",
+    "url": "https://github.com/dkshah25/ScholarMind",
+    "languages": "Python, TypeScript, CSS, JavaScript",
+    "topics": ""
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "source": "github",
+  "repository": "PRODIGY_GA_02",
+  "url": "https://github.com/dkshah25/PRODIGY_GA_02",
+  "description": "",
+  "languages": [
+    "Python"
+  ],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2025-07-17T13:58:03Z",
+    "updated_at": "2025-07-17T14:25:11Z"
+  },
+  "commits": [
+    {
+      "sha": "5943968",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-17T14:25:07Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "15085e5",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-17T14:24:41Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "7db8ef2",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-17T14:24:16Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "7bd7d01",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-17T14:20:26Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "194ac1e",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-17T13:58:04Z",
+      "message": "Initial commit"
+    }
+  ],
+  "readme": "# Prodigy InfoTech Internship \u2013 Generative AI  \n## \ud83e\udde0 Image Generation using Stable Diffusion\n\nThis repository contains the completed internship task under the **\"Generative AI Internship Program\"** by **Prodigy InfoTech**.\n\n### \ud83c\udfaf Task Objective:\nUse a pre-trained generative AI model (Stable Diffusion) to generate high-quality images from creative text prompts.\n\n---\n\n### \ud83d\udee0\ufe0f Tools & Technologies Used:\n- \ud83d\udca1 **Stable Diffusion v1.4** (via Hugging Face Diffusers)\n- \ud83d\ude80 Google Colab with GPU Runtime\n- \ud83e\udde0 Transformers, Diffusers, Accelerate, Torch\n- \ud83d\uddbc\ufe0f Python for inference and prompt engineering\n\n---\n\n### \u2728 Generated Prompts:\n1. **Realistic Indian City**\n2. **Celestial Sanctuary**\n3. **Digital Brain**\n4. **AI Core Room**\n5. **Futuristic Minimalism**\n6. **Monk Floating Sphere**\n7. **Temple in Clouds**\n8. **Futuristic Cityscape**\n\nEach prompt was designed to create visually engaging and meaningful images using AI.\n\n---\n\n### \ud83d\udcc1 Folder Structure:\n```\nPRODIGY_IMAGE_GEN/\n\u2502\n\u251c\u2500\u2500 generate_images.py            # Python script to generate images from prompts\n\u251c\u2500\u2500 prompts/                      # Contains 8 text prompt files\n\u2502   \u251c\u2500\u2500 realistic_indian_city.txt\n\u2502   \u251c\u2500\u2500 celestial_sanctuary.txt\n\u2502   \u251c\u2500\u2500 digital_brain.txt\n\u2502   \u251c\u2500\u2500 ai_core_room.txt\n\u2502   \u251c\u2500\u2500 futuristic_minimalism.txt\n\u2502   \u251c\u2500\u2500 monk_floating_sphere.txt\n\u2502   \u251c\u2500\u2500 temple_in_clouds.txt\n\u2502   \u2514\u2500\u2500 futuristic_cityscape.txt\n\u2502\n\u251c\u2500\u2500 generated_images/             # Folder for sample generated outputs (optional)\n\u2502   \u251c\u2500\u2500 image1.png\n\u2502   \u2514\u2500\u2500 ...\n\u2502\n\u2514\u2500\u2500 README.md                     # This documentation file\n```\n\n---\n\n### \u25b6\ufe0f How to Run:\n\n1. Clone this repository  \n2. Install required packages:\n\n```bash\npip install diffusers transformers accelerate torch safetensors\n```\n\n3. Run the script:\n\n```bash\npython generate_images.py\n```\n\nImages will be saved in the `generated_images/` folder.\n\n---\n\n### \ud83d\ude4c Author:\n**Dharmit Shah**  \nGitHub: [@dkshah25](https://github.com/dkshah25)  \nTech Enthusiast | Exploring AI, ML, and Creative Tech  \n",
+  "metadata": {
+    "source": "github",
+    "repository": "PRODIGY_GA_02",
+    "url": "https://github.com/dkshah25/PRODIGY_GA_02",
+    "languages": "Python",
+    "topics": ""
+  }
+}

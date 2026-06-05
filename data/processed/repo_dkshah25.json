@@ -1,0 +1,117 @@
+{
+  "source": "github",
+  "repository": "dkshah25",
+  "url": "https://github.com/dkshah25/dkshah25",
+  "description": "",
+  "languages": [],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2025-09-13T10:46:49Z",
+    "updated_at": "2026-05-24T05:07:46Z"
+  },
+  "commits": [
+    {
+      "sha": "fb8e828",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-24T05:07:43Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "9880162",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-24T05:07:12Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "ebb2d5d",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-15T11:58:50Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "276b561",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-15T11:57:26Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "023a3a7",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-15T11:28:39Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "48ffbb6",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-15T11:28:07Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "a040ea9",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-10T12:53:28Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "5f76011",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-10T12:52:31Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "1d6cd27",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-10T12:51:31Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "8183e5d",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-10T12:50:41Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "31efdcf",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-10T12:47:43Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "1345110",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-10T12:46:12Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "cb1fa4d",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-10T12:44:22Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "2ebd322",
+      "author": "DHARMIT SHAH",
+      "date": "2026-05-10T12:42:42Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "c89a84b",
+      "author": "DHARMIT SHAH",
+      "date": "2026-01-12T21:48:07Z",
+      "message": "Update README.md"
+    }
+  ],
+  "readme": "<div align=\"center\">\n\n# Dharmit Kunal Shah\n\n<p align=\"center\">\n  <img src=\"./assets/123.gif\" width=\"100%\" />\n</p>\n\n<img src=\"https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=700&size=30&duration=3000&pause=1000&color=38BDF8&center=true&vCenter=true&width=1000&lines=Computer+Science+Student;AI+%26+Automation+Builder;Frontend+Developer;Open+Source+Contributor;Building+Real+World+Projects\" alt=\"Typing SVG\" />\n\n<br/>\n\n<img src=\"https://komarev.com/ghpvc/?username=dkshah25&label=Profile+Views&color=0ea5e9&style=for-the-badge\" />\n\n<br/><br/>\n\n<a href=\"https://github.com/dkshah25\">\n<img src=\"https://img.shields.io/github/followers/dkshah25?label=Followers&style=for-the-badge&color=181717&logo=github\"/>\n</a>\n\n<a href=\"https://github.com/dkshah25?tab=repositories\">\n<img src=\"https://img.shields.io/badge/Projects-Explore-blue?style=for-the-badge&logo=github\"/>\n</a>\n\n<a href=\"https://dharmit-shah.netlify.app/\">\n<img src=\"https://img.shields.io/badge/Portfolio-Visit-success?style=for-the-badge&logo=vercel\"/>\n</a>\n\n</div>\n\n---\n\n# About Me\n\n```yaml\nName: Dharmit Kunal Shah\nEducation: B.Tech Computer Science Engineering\nLocation: India\n\nFocus Areas:\n  - Artificial Intelligence\n  - Full Stack Development\n  - Automation Systems\n  - Open Source\n  - Product Development\n  - Startup Building\n\nCurrently Working On:\n  - AI Agents\n  - AI Automation Workflows\n  - Full Stack Applications\n  - Open Source Contributions\n\nLearning:\n  - Advanced AI Systems\n  - Scalable Backend Architecture\n  - Modern Web Technologies\n\nGoal:\n  - Build impactful technology products\n```\n\n---\n\n# Tech Stack\n\n<div align=\"center\">\n\n### Languages\n\n<img src=\"https://skillicons.dev/icons?i=js,ts,python,cpp,c,java,html,css\" />\n\n### Frameworks & Libraries\n\n<img src=\"https://skillicons.dev/icons?i=react,nextjs,nodejs,express,tailwind\" />\n\n### AI / ML\n\n<img src=\"https://skillicons.dev/icons?i=tensorflow,pytorch\" />\n\n### Databases & Backend\n\n<img src=\"https://skillicons.dev/icons?i=mongodb,mysql,firebase,supabase\" />\n\n### Tools & Platforms\n\n<img src=\"https://skillicons.dev/icons?i=git,github,linux,vscode,postman,figma,docker,vercel,netlify\" />\n\n</div>\n\n---\n\n# Featured Domains\n\n<table>\n<tr>\n\n<td width=\"50%\">\n\n## Web Development\n\n- Responsive UI/UX\n- Frontend Engineering\n- React Ecosystem\n- API Integrations\n- Full Stack Applications\n- Performance Optimization\n\n</td>\n\n<td width=\"50%\">\n\n## Artificial Intelligence\n\n- Generative AI\n- AI Agents\n- AI Automation\n- Prompt Engineering\n- AI Workflows\n- Productivity Systems\n\n</td>\n\n</tr>\n</table>\n\n---\n\n# Connect With Me\n\n<div align=\"center\">\n\n<a href=\"https://linkedin.com/in/dharmit-shah2508\">\n  <img src=\"https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white\"/>\n</a>\n\n<a href=\"https://instagram.com/dharmit.tech\">\n  <img src=\"https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white\"/>\n</a>\n\n<a href=\"https://www.hackerrank.com/dharmitshah2007\">\n  <img src=\"https://img.shields.io/badge/HackerRank-2EC866?style=for-the-badge&logo=hackerrank&logoColor=white\"/>\n</a>\n\n<a href=\"https://leetcode.com/dkshah25\">\n  <img src=\"https://img.shields.io/badge/LeetCode-FFA116?style=for-the-badge&logo=leetcode&logoColor=black\"/>\n</a>\n\n<a href=\"mailto:dharmitshah2007@gmail.com\">\n  <img src=\"https://img.shields.io/badge/Gmail-EA4335?style=for-the-badge&logo=gmail&logoColor=white\"/>\n</a>\n\n</div>\n\n---\n\n# Contribution Streak\n\n<div align=\"center\">\n\n<img src=\"https://github-readme-streak-stats-eight.vercel.app/?user=dkshah25&theme=transparent&hide_border=true\"/>\n\n</div>\n\n\n---\n\n# Contribution Graph\n\n<div align=\"center\">\n\n<img width=\"95%\" src=\"https://github-readme-activity-graph.vercel.app/graph?username=dkshah25&theme=github-dark&hide_border=true&radius=16\"/>\n\n</div>\n\n---\n\n# Achievements & Community\n\n- Open Source Contributor\n- Hackathon Participant\n- National Level Finalist Participant\n- AI & Automation Enthusiast\n- Continuous Learner\n- Building Real-world Projects\n\n---\n\n# Current Focus\n\n```txt\n\u2192 Building scalable AI-powered applications\n\u2192 Learning advanced AI systems\n\u2192 Contributing to open source\n\u2192 Building impactful products\n\u2192 Exploring startup opportunities\n\u2192 Improving system design & development skills\n```\n\n---\n\n<div align=\"center\">\n\n## \u201cTechnology + Creativity can build extraordinary things.\u201d\n\n<br/>\n\n\u2b50 From [Dharmit Kunal Shah](https://github.com/dkshah25)\n\n</div>\n",
+  "metadata": {
+    "source": "github",
+    "repository": "dkshah25",
+    "url": "https://github.com/dkshah25/dkshah25",
+    "languages": "None specified",
+    "topics": ""
+  }
+}

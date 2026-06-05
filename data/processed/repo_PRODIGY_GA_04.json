@@ -1,0 +1,54 @@
+{
+  "source": "github",
+  "repository": "PRODIGY_GA_04",
+  "url": "https://github.com/dkshah25/PRODIGY_GA_04",
+  "description": "",
+  "languages": [
+    "Jupyter Notebook",
+    "Python"
+  ],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2025-07-18T09:21:17Z",
+    "updated_at": "2025-07-25T11:23:35Z"
+  },
+  "commits": [
+    {
+      "sha": "555d11f",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-18T09:24:51Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "ef402ea",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-18T09:24:08Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "99c42af",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-18T09:21:43Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "ffad936",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-18T09:21:18Z",
+      "message": "Initial commit"
+    }
+  ],
+  "readme": "# Pix2Pix Image-to-Image Translation using cGAN\n\nThis project implements a Pix2Pix model using Conditional GANs (cGAN) for image-to-image translation. The task was completed as part of my internship with **Prodigy InfoTech**. The dataset used is the **CMP Facade** dataset, where the model learns to translate building facade labels into realistic building images.\n\n---\n\n## \ud83d\udccc Project Objective\n\n- Implement Pix2Pix using a Conditional GAN (cGAN).\n- Perform paired image-to-image translation using a pre-trained dataset.\n- Visualize results: input image, ground truth, and predicted image.\n\n---\n\n## \ud83e\udde0 Technologies Used\n\n- Python\n- TensorFlow\n- Google Colab\n- Matplotlib\n- CMP Facades Dataset\n\n---\n\n## \ud83d\udcc1 Dataset\n\n- Dataset: [CMP Facades](https://people.eecs.berkeley.edu/~tinghuiz/projects/pix2pix/datasets/)\n- Format: Paired images (labels and facades)\n- Structure:\n  ```\n  facades/\n  \u251c\u2500\u2500 train/\n  \u251c\u2500\u2500 test/\n  \u2514\u2500\u2500 val/\n  ```\n\n---\n\n## \u2699\ufe0f Steps Performed\n\n1. \u2705 Set up environment (TensorFlow, image utils)\n2. \u2705 Downloaded and extracted the CMP Facades dataset\n3. \u2705 Preprocessed paired images: resizing, normalization\n4. \u2705 Built Generator and Discriminator models\n5. \u2705 Trained model using cGAN loss and generator loss\n6. \u2705 Visualized predictions (input vs ground truth vs generated)\n7. \u2705 Saved sample result to `results/epoch_20_sample.png`\n\n---\n\n## \ud83d\uddbc\ufe0f Sample Output\n\n| Input Image | Ground Truth | Predicted Image |\n|-------------|---------------|------------------|\n| ![input](results/epoch_20_sample.png) | ![gt](results/epoch_20_sample.png) | ![pred](results/epoch_20_sample.png) |\n\n(*Note: All 3 images in a row are included in the single output image*)\n\n---\n\n## \ud83d\udce6 How to Run\n\n1. Clone this repository:\n   ```bash\n   git clone https://github.com/your-username/pix2pix-facades.git\n   cd pix2pix-facades\n   ```\n\n2. Upload to [Google Colab](https://colab.research.google.com/) or run locally with GPU.\n\n3. Install dependencies (if running locally):\n   ```bash\n   pip install tensorflow matplotlib\n   ```\n\n4. Run `pix2pix_facades.ipynb` step by step.\n\n---\n\n## \ud83d\udcc1 Folder Structure\n\n```\npix2pix-facades/\n\u251c\u2500\u2500 facades/                   # Dataset folder\n\u2502   \u251c\u2500\u2500 train/\n\u2502   \u251c\u2500\u2500 test/\n\u2502   \u2514\u2500\u2500 val/\n\u251c\u2500\u2500 results/\n\u2502   \u2514\u2500\u2500 epoch_20_sample.png    # Output image\n\u251c\u2500\u2500 pix2pix_facades.ipynb      # Main notebook\n\u2514\u2500\u2500 README.md\n```\n\n---\n\n## \u2705 Internship Task Completed\n\nThis repository was created for the **\"Image-to-Image Translation with cGANs\"** task of my **Generative AI Internship** at **Prodigy InfoTech**.\n\n---\n\n## \ud83d\ude4b\u200d\u2642\ufe0f Author\n\n**Dharmit Shah**  \n[LinkedIn](https://www.linkedin.com/in/dharmit-shah2508) \u2022 [GitHub](https://github.com/dkshah25)\n\n---\n\n## \ud83d\udcc3 License\n\nThis project is open-source and free to use for educational purposes.\n",
+  "metadata": {
+    "source": "github",
+    "repository": "PRODIGY_GA_04",
+    "url": "https://github.com/dkshah25/PRODIGY_GA_04",
+    "languages": "Jupyter Notebook, Python",
+    "topics": ""
+  }
+}

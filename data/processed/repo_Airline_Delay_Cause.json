@@ -1,0 +1,54 @@
+{
+  "source": "github",
+  "repository": "Airline_Delay_Cause",
+  "url": "https://github.com/dkshah25/Airline_Delay_Cause",
+  "description": "",
+  "languages": [
+    "Jupyter Notebook",
+    "Python"
+  ],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2026-02-08T10:58:50Z",
+    "updated_at": "2026-02-08T11:04:50Z"
+  },
+  "commits": [
+    {
+      "sha": "9f69348",
+      "author": "DHARMIT SHAH",
+      "date": "2026-02-08T11:04:47Z",
+      "message": "Update project description and dataset references"
+    },
+    {
+      "sha": "4dfe6a9",
+      "author": "DHARMIT SHAH",
+      "date": "2026-02-08T11:02:11Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "e2323b2",
+      "author": "DHARMIT SHAH",
+      "date": "2026-02-08T11:01:04Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "60e0f6c",
+      "author": "DHARMIT SHAH",
+      "date": "2026-02-08T10:58:50Z",
+      "message": "Initial commit"
+    }
+  ],
+  "readme": "# Airline Delay Cause Classification using Multinomial Logistic Regression\n\n## What this project is about\nFlight delays don\u2019t happen for just one reason. They can be caused by weather,\nairline operations, air traffic congestion (NAS), security issues, or late-arriving aircraft.\n\nIn this project, I built a **multinomial logistic regression model** to identify the\n**primary cause of delay** for Flights using real operational data.\nInstead of predicting how long a flight will be delayed, the focus is on\n*why* the delay happened.\n\nI also extended the model to go beyond simple classification by using predicted\nprobabilities to estimate the **expected delay contribution** of each cause.\nThis makes the results more interpretable and operationally useful.\n\n---\n\n## Dataset\nThe project uses the **Airline Delay Causes** dataset, which contains\naggregated delay statistics for domestic flights in the United States.\n\nThe dataset includes:\n- Year and month of operation  \n- Airline carrier and airport codes  \n- Number of arriving flights and delayed flights  \n- Delay minutes broken down by cause (carrier, weather, NAS, security, late aircraft)\n\n### Dataset credit\nDataset source: **Kaggle \u2013 Airline Delay Causes**\n\nThe dataset is used strictly for educational and research purposes.\nAll rights belong to the original data providers.\n\nThe CSV file is not included in this repository due to licensing and size\nconsiderations. To reproduce the results, download the dataset from Kaggle\nand place it in the same directory as the notebook.\n\n---\n\n## Target construction\nThe target variable (`delay_cause`) is created by selecting the delay category\nwith the **maximum delay minutes** for each observation:\n\n- Carrier delay  \n- Weather delay  \n- NAS delay  \n- Security delay  \n- Late aircraft delay  \n\nThis converts the problem into a **multiclass classification task** where each\nflight is assigned its dominant delay cause.\n\n---\n\n## Model and approach\n- Categorical variables are one-hot encoded\n- Numerical operational features are used directly\n- Data is split using a stratified train\u2013test split\n- A **multinomial logistic regression** model is trained using the LBFGS solver\n\nLogistic regression was chosen for its interpretability and well-defined\nprobabilistic outputs.\n\n---\n\n## Evaluation\nModel performance is evaluated using:\n- Precision, recall, and F1-score for each class  \n- Confusion matrix visualization  \n- Class-wise accuracy comparison  \n- Baseline comparison using a naive classifier  \n\nThis helps identify where the model performs well and where delay causes\ntend to overlap.\n\n---\n\n## Expected delay attribution (extension)\nInstead of stopping at class prediction, the model\u2019s predicted probabilities\nare combined with total delay minutes to estimate **expected delay contribution**\nfor each cause:\n\nExpected contribution =  \n`P(delay cause | features) \u00d7 total delay minutes`\n\nThis provides a more meaningful view of operational risk by showing how much\ndelay impact is attributable to each cause on average.\n\n---\n\n## Key takeaways\n- Weather and NAS delays show strong seasonal behavior  \n- Carrier-related delays vary noticeably across airlines  \n- Most confusion occurs between carrier and NAS delays  \n- Probability-based attribution offers more insight than labels alone  \n\n---\n\n## Tools used\n- Python  \n- pandas  \n- scikit-learn  \n- seaborn  \n- matplotlib  \n\n---\n\n## How to run\n1. Download the dataset from Kaggle  \n2. Place the CSV file in the same folder as the notebook  \n3. Run the notebook from top to bottom  \n\n---\n\n## Notes\nThis project was built as a learning and analysis exercise focused on\ninterpretable machine learning and practical modeling decisions.\n",
+  "metadata": {
+    "source": "github",
+    "repository": "Airline_Delay_Cause",
+    "url": "https://github.com/dkshah25/Airline_Delay_Cause",
+    "languages": "Jupyter Notebook, Python",
+    "topics": ""
+  }
+}

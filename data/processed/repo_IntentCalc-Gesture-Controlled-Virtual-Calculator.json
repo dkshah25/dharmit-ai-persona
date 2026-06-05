@@ -1,0 +1,53 @@
+{
+  "source": "github",
+  "repository": "IntentCalc-Gesture-Controlled-Virtual-Calculator",
+  "url": "https://github.com/dkshah25/IntentCalc-Gesture-Controlled-Virtual-Calculator",
+  "description": "IntentCalc is a gesture-controlled virtual calculator built using OpenCV and MediaPipe. It uses edge-triggered pinch input, swipe-based backspace, and fist-based clear actions to enable stable, intent-driven touchless interaction with a futuristic HUD-style interface.",
+  "languages": [
+    "Python"
+  ],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2026-01-11T11:51:52Z",
+    "updated_at": "2026-01-11T12:05:44Z"
+  },
+  "commits": [
+    {
+      "sha": "c41df4f",
+      "author": "DHARMIT SHAH",
+      "date": "2026-01-11T12:05:40Z",
+      "message": "Refactor GestureEngine class in gestures.py"
+    },
+    {
+      "sha": "f8c2530",
+      "author": "DHARMIT SHAH",
+      "date": "2026-01-11T12:01:43Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "f6fe267",
+      "author": "DHARMIT SHAH",
+      "date": "2026-01-11T11:52:42Z",
+      "message": "Revise README for clarity and detail\n\nExpanded project description and features, added collaborators, technologies used, and future enhancements."
+    },
+    {
+      "sha": "3c17b71",
+      "author": "DHARMIT SHAH",
+      "date": "2026-01-11T11:51:53Z",
+      "message": "Initial commit"
+    }
+  ],
+  "readme": "# Gesture-Controlled Virtual Calculator \ud83d\udd90\ufe0f\ud83e\uddee\n\nA **touchless, gesture-based virtual calculator** built using **Computer Vision and Human\u2013Computer Interaction (HCI)** principles. The system allows users to perform arithmetic operations in real time using **hand gestures captured via a webcam**, without any physical input devices.\n\nThis project prioritizes **intent-driven interaction**, stability, and explainable engineering \u2014 not just visual novelty.\n\n---\n\n## \ud83d\udc65 Collaborators\n\n* **Dharmit Kunal Shah** \u2013 System architecture, gesture logic, HUD-style UI/UX design, interaction stability, calculator engine\n* **Ishaan Chand** \u2013 Gesture experimentation, testing, optimization, and interaction refinement\n\n> Built collaboratively with shared responsibility over design decisions, debugging, and interaction behavior.\n\n---\n\n## \u2728 Key Features\n\n### \ud83d\udd90\ufe0f Gesture-Based Interaction\n\n* **Pinch (Thumb + Index)** \u2192 Press calculator button\n* **Swipe Left (Index Finger)** \u2192 Backspace\n* **Closed Fist (Hold)** \u2192 Clear entire expression\n\nAll gestures are **edge-triggered** and **time-gated** to prevent accidental or repeated inputs.\n\n---\n\n### \ud83e\udde0 Intent-Driven Click System\n\n* No hover-based clicking\n* No frame-based repetition\n* One gesture \u2192 one action\n\nThe system combines:\n\n* Pinch detection\n* Gesture latching\n* Temporal thresholds\n\nResult: **high accuracy with near-zero false positives**.\n\n---\n\n### \ud83d\udda5\ufe0f HUD-Style Glassmorphism UI\n\n* Semi-transparent glass buttons\n* Visual hover intensity feedback\n* Operator color distinction\n* Floating display panel\n\nThe UI is designed to feel like a **futuristic command interface**, not a traditional calculator.\n\n---\n\n### \ud83e\uddee Custom Calculator Engine\n\n* No unsafe `eval()` usage\n* Deterministic arithmetic evaluation\n* Clean and explainable computation logic\n\n---\n\n### \ud83d\udcca Performance Awareness\n\n* Real-time FPS monitoring\n* Stable interaction across varying frame rates\n\n---\n\n## \ud83e\udde9 Project Architecture\n\n```\nvirtual_calculator/\n\u2502\n\u251c\u2500\u2500 core/\n\u2502   \u251c\u2500\u2500 hand_tracker.py     # MediaPipe hand landmark detection\n\u2502   \u251c\u2500\u2500 gestures.py         # Gesture recognition & intent logic\n\u2502   \u251c\u2500\u2500 ui.py               # HUD-style UI rendering\n\u2502   \u251c\u2500\u2500 calculator.py      # Arithmetic evaluation engine\n\u2502   \u2514\u2500\u2500 metrics.py          # FPS and performance tracking\n\u2502\n\u251c\u2500\u2500 main.py                 # Application orchestration\n\u251c\u2500\u2500 requirements.txt\n\u2514\u2500\u2500 README.md\n```\n\nEach module follows **single-responsibility design**, making the system clean, testable, and extensible.\n\n---\n\n## \u2699\ufe0f Technologies Used\n\n* **Python 3.11**\n* **OpenCV** \u2013 Video capture and rendering\n* **MediaPipe** \u2013 Real-time hand landmark detection\n* **NumPy** \u2013 Mathematical operations\n\n---\n\n## \ud83e\uddea Interaction Stability Design\n\nUnlike naive gesture projects, this system uses:\n\n* **Edge-triggered gestures** (press fires once per gesture)\n* **Temporal gating** (minimum time between actions)\n* **Gesture state management**\n\nThis ensures predictable, professional-grade interaction behavior.\n\n---\n\n## \u25b6\ufe0f How to Run\n\n### 1. Install dependencies\n\n```bash\npip install -r requirements.txt\n```\n\n### 2. Run the application\n\n```bash\npython main.py\n```\n\nEnsure a webcam is connected and accessible.\n\n---\n\n## \ud83d\udccc Use Cases\n\n* Touchless interfaces\n* Human\u2013Computer Interaction experiments\n* Computer vision demonstrations\n* Hackathons and technical showcases\n* Accessibility-focused interaction systems\n\n---\n\n## \ud83d\ude80 Future Enhancements\n\n* Scientific calculator mode\n* Gesture-only UI (no visible buttons)\n* Audio or haptic feedback\n* Adaptive gesture calibration\n\n---\n\n## \ud83e\udde0 Design Philosophy\n\nThis project prioritizes:\n\n* **Intent over motion**\n* **Stability over speed**\n* **Engineering discipline over gimmicks**\n\nThe objective was to build a **real interaction system**, not just a visual demo.\n\n---\n\n## \ud83d\udcc4 License\n\nOpen for learning and experimentation. Attribution is appreciated.\n\n---\n\n**Built with precision, collaboration, and curiosity.**\n",
+  "metadata": {
+    "source": "github",
+    "repository": "IntentCalc-Gesture-Controlled-Virtual-Calculator",
+    "url": "https://github.com/dkshah25/IntentCalc-Gesture-Controlled-Virtual-Calculator",
+    "languages": "Python",
+    "topics": ""
+  }
+}

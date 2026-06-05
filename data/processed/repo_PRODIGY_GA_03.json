@@ -1,0 +1,54 @@
+{
+  "source": "github",
+  "repository": "PRODIGY_GA_03",
+  "url": "https://github.com/dkshah25/PRODIGY_GA_03",
+  "description": "",
+  "languages": [
+    "Jupyter Notebook",
+    "Python"
+  ],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2025-07-25T11:13:12Z",
+    "updated_at": "2025-07-25T11:23:07Z"
+  },
+  "commits": [
+    {
+      "sha": "8124f76",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-25T11:19:27Z",
+      "message": "Update README.md"
+    },
+    {
+      "sha": "f005052",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-25T11:14:14Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "02ed322",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-25T11:13:47Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "fbcca4f",
+      "author": "DHARMIT SHAH",
+      "date": "2025-07-25T11:13:13Z",
+      "message": "Initial commit"
+    }
+  ],
+  "readme": "# \ud83e\udde0 Markov Chain Text Generator\n\nThis project is part of my internship at **Prodigy Infotech**. It demonstrates a simple **text generation algorithm** using **1st-order Markov Chains**.\n\n---\n\n## \ud83d\udccc Project Overview\n\nThe code generates new text by predicting the next word based on the current word using a statistical model (Markov Chain). It learns word transitions from a training text and produces random but grammatically sensible output.\n\n---\n\n## \ud83d\udd27 How It Works\n\n1. **Input Text**: A paragraph or document is used as the training source.\n2. **Model Building**:\n   - A dictionary is created where each word maps to possible next words.\n3. **Text Generation**:\n   - The program starts from a random word.\n   - It chooses the next word based on the model and continues for a fixed length.\n\n---\n\n## \ud83e\uddea Sample Output\n\n```\nGenerated Text:\n\npercieves its chance of successfully achieving its goals. Colloquially, the field as the study of successfully achieving its environment and problem solving.\n```\n\nOutput will vary on each run due to random selection.\n\n---\n\n## \ud83d\udee0\ufe0f Tools Used\n\n- \ud83d\udc0d Python\n- \ud83d\udcda Google Colab\n- \ud83d\udd01 Markov Chains (1st-order)\n- \ud83c\udfb2 `random` module\n\n---\n\n## \ud83d\ude80 How to Run\n\n1. Open the `.ipynb` file in [Google Colab]\n2. Run the notebook cell by cell\n3. The final output will be printed below the last cell\n\n---\n\n## \ud83d\udcc8 Future Improvements\n\n- Use 2-gram or 3-gram models for better sentence flow\n- Remove punctuation and normalize text\n- Add user input for start word and text file support\n\n---\n\n## \ud83d\ude4b\u200d\u2642\ufe0f Author\n\n**Dharmit Kunal Shah**  \nProdigy Infotech Intern  \n[LinkedIn Profile](https://www.linkedin.com/in/dharmit-shah2508) *(Optional)*\n\n---\n",
+  "metadata": {
+    "source": "github",
+    "repository": "PRODIGY_GA_03",
+    "url": "https://github.com/dkshah25/PRODIGY_GA_03",
+    "languages": "Jupyter Notebook, Python",
+    "topics": ""
+  }
+}

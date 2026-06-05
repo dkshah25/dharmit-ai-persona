@@ -1,0 +1,47 @@
+{
+  "source": "github",
+  "repository": "VisionAct",
+  "url": "https://github.com/dkshah25/VisionAct",
+  "description": "Vision-driven UI automation engine that interacts with applications using visual context when APIs or traditional automation are unavailable.",
+  "languages": [
+    "Python"
+  ],
+  "topics": [],
+  "stats": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0
+  },
+  "timestamps": {
+    "created_at": "2026-01-09T16:08:19Z",
+    "updated_at": "2026-01-09T18:26:59Z"
+  },
+  "commits": [
+    {
+      "sha": "ebf4be9",
+      "author": "DHARMIT SHAH",
+      "date": "2026-01-09T18:26:55Z",
+      "message": "Add files via upload"
+    },
+    {
+      "sha": "a94c748",
+      "author": "DHARMIT SHAH",
+      "date": "2026-01-09T16:22:59Z",
+      "message": "Revise README by removing architecture details\n\nRemoved architecture and project structure sections from README."
+    },
+    {
+      "sha": "2e8ba61",
+      "author": "DHARMIT SHAH",
+      "date": "2026-01-09T16:14:26Z",
+      "message": "Revise README for improved project documentation\n\nUpdated README to enhance clarity and detail about VisionAct's functionality, installation, and limitations."
+    }
+  ],
+  "readme": "# VisionAct  \n### Vision-Driven UI Automation for No-API Systems\n\n<p align=\"center\">\n  <img src=\"https://img.shields.io/badge/status-stable-brightgreen\" />\n  <img src=\"https://img.shields.io/badge/python-3.8%2B-blue\" />\n  <img src=\"https://img.shields.io/badge/opencv-vision-orange\" />\n  <img src=\"https://img.shields.io/badge/automation-ui--based-informational\" />\n  <img src=\"https://img.shields.io/badge/license-educational-lightgrey\" />\n</p>\n\n---\n\n## Overview\n\n**VisionAct** is a vision-based UI automation engine that interacts with applications purely through **visual context**, without relying on APIs, DOM access, or browser-specific automation tools.\n\nIt is designed for environments where:\n- APIs do not exist  \n- Traditional automation (e.g., Selenium) is ineffective  \n- Human-like interaction is required  \n\nVisionAct observes the screen using **OpenCV**, verifies UI elements using **confidence-based matching**, and performs safe, controlled actions using **PyAutoGUI**.\n\n---\n\n## Why VisionAct?\n\nMost automation frameworks assume structured access to systems (APIs, DOM trees, or internal hooks).  \nIn practice, many real-world systems offer **none of these**.\n\nVisionAct treats automation as a **last-resort engineering solution**, mimicking how a human:\n1. Sees the screen  \n2. Identifies known visual elements  \n3. Acts only when sufficiently confident  \n\nThis makes it suitable for:\n- Legacy desktop software  \n- Restricted or anti-bot environments  \n- One-off productivity automation  \n- Proof-of-concept tooling  \n\n---\n\n## How It Works\n\n1. A screenshot of the current screen is captured.  \n2. OpenCV performs template matching against a known UI element.  \n3. A confidence score (0.0\u20131.0) is calculated.  \n4. Actions are executed **only if confidence exceeds a predefined threshold**.  \n5. The system exits safely after task completion.  \n\nThis prevents blind clicking and unintended actions.\n\n---\n\n## Configuration\n\nAll safety-critical parameters are defined in `config.py`:\n\n- **Confidence Threshold** \u2013 minimum acceptable match quality  \n- **Scan Interval** \u2013 frequency of screen analysis  \n- **Action Delay** \u2013 pacing for human-like interaction  \n\nThis separation avoids hard-coded behavior and enables safe tuning.\n\n---\n\n## Installation\n\n```bash\npip install -r requirements.txt\n```\n---\n\n## Running VisionAct\n\n1. Capture a **tight screenshot** of the target UI element you want to automate.\n2. Save the image as `assets/target.png`.\n3. Open the application or website you want to automate.\n4. Run the engine:\n\n```bash\npython src/main.py\n```\n\nVisionAct will continuously observe the screen and act only when the target element is confidently detected.\n\n---\n\n## Safety Mechanisms\n\nVisionAct is designed with safety-first automation principles:\n\n- **Confidence-based decision making**\n- **Single-action execution** (prevents infinite loops)\n- **PyAutoGUI emergency failsafe** (move mouse to top-left corner to abort)\n- **Explicit delays** to prevent race conditions  \n\nThese are **deliberate engineering choices**, not afterthoughts.\n\n---\n\n## Limitations (Important)\n\nVisionAct is **not** a universal automation solution.\n\nKnown limitations include:\n- Sensitivity to UI changes  \n- Dependency on screen resolution and DPI scaling  \n- Not suitable for mission-critical automation  \n- Intended for controlled and predictable environments  \n\nThese trade-offs are **intrinsic to vision-based automation**.\n\n---\n\n## When NOT to Use VisionAct\n\nDo **not** use VisionAct:\n- When an official API exists  \n- When DOM-level automation is possible  \n- When absolute reliability is required  \n- When UI elements change frequently  \n\nIn such cases, traditional automation tools are superior.\n\n---\n\n## Learning Outcomes\n\nThis project demonstrates:\n- Practical application of computer vision  \n- Confidence-driven decision systems  \n- Fail-safe automation design  \n- Engineering trade-off awareness  \n- Modular and extensible architecture  \n\n---\n\n## Roadmap\n\nPlanned improvements include:\n- JSON/YAML-based task pipelines  \n- OCR integration for text-based decisions  \n- Multi-template detection  \n- Structured logging and screenshots  \n- Performance optimization using region-of-interest scanning  \n\n---\n\n## License\n\nThis project is intended for **educational and experimental use**.\n",
+  "metadata": {
+    "source": "github",
+    "repository": "VisionAct",
+    "url": "https://github.com/dkshah25/VisionAct",
+    "languages": "Python",
+    "topics": ""
+  }
+}
