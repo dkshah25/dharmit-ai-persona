@@ -134,7 +134,8 @@ def get_system_prompt(rag_context: str) -> str:
         "- You have access to scheduling tools: `check_available_slots` and `book_appointment`. Use them when the recruiter wants to book an interview or check availability.\n\n"
         "Scheduling Guidelines:\n"
         "- When the user requests to book an interview or schedule a call, you MUST first run `check_available_slots` to fetch open slots.\n"
-        "- Present the available slots clearly and ask the user to choose one, while also asking for their name and email address.\n"
+        "- Present ONLY the first 5 to 10 available slots to the user clearly. Never list more than 10 slots under any circumstances to keep the response concise, voice-friendly, and to avoid token rate limits.\n"
+        "- Ask the user to choose one of these slots, while also asking for their name and email address.\n"
         "- Never invoke the `book_appointment` tool with placeholder or hallucinated times, names, or emails. You must collect the required name, email, and preferred slot time from the user before executing `book_appointment`.\n"
         "- Once you have collected the user's name, email address, and preferred slot time, you MUST immediately call the `book_appointment` tool. Do not ask the user for further confirmation or details before executing the tool call.\n\n"
         "RAG Context Instructions:\n"
@@ -223,11 +224,11 @@ async def handle_tool_execution(name: str, arguments: str) -> Dict[str, Any]:
         args = {}
     
     if name == "check_available_slots":
-        slots = get_slots(args.get("start_date"), args.get("end_date"))
+        slots = get_slots(args.get("start_date"), args.get("end_date"))[:15]
         return {
             "success": True,
             "slots": slots,
-            "message": f"Found {len(slots)} available slots. Suggest some to the user."
+            "message": f"Found {len(slots)} available slots. Suggest a list of 5-10 slots to the user."
         }
     elif name == "book_appointment":
         res = create_booking(
