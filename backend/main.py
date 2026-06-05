@@ -225,13 +225,22 @@ async def handle_tool_execution(name: str, arguments: str) -> Dict[str, Any]:
         return res
     return {"success": False, "error": f"Unknown tool: {name}"}
 
+def get_resume_path() -> str:
+    # Try local backend/data/resume.pdf first (used in Render production where rootDir is backend)
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+    local_path = os.path.join(backend_dir, "data", "resume.pdf")
+    if os.path.exists(local_path):
+        return local_path
+    # Fallback to parent workspace dir
+    workspace_dir = os.path.dirname(backend_dir)
+    return os.path.join(workspace_dir, "data", "resume.pdf")
+
 @app.get("/api/status")
 async def get_status():
     """
     Check availability of resources and keys
     """
-    workspace_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    resume_path = os.path.join(workspace_dir, "data", "resume.pdf")
+    resume_path = get_resume_path()
     db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "database")
     
     active_tunnel_url = None
@@ -260,8 +269,7 @@ async def trigger_ingestion():
     if not OPENAI_API_KEY and not GEMINI_API_KEY and not GROQ_API_KEY:
         raise HTTPException(status_code=500, detail="Neither OPENAI_API_KEY nor GEMINI_API_KEY nor GROQ_API_KEY configured in backend .env")
         
-    workspace_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    resume_path = os.path.join(workspace_dir, "data", "resume.pdf")
+    resume_path = get_resume_path()
     processed_dir = os.path.join(workspace_dir, "data", "processed")
     
     # Run ingestion script functions

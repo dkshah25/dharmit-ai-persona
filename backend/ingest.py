@@ -209,7 +209,13 @@ def ingest_data(resume_pdf_path, output_dir):
     return len(github_documents)
 
 if __name__ == "__main__":
-    workspace_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    resume_path = os.path.join(workspace_dir, "data", "resume.pdf")
-    output_path = os.path.join(workspace_dir, "data", "processed")
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+    local_resume = os.path.join(backend_dir, "data", "resume.pdf")
+    if os.path.exists(local_resume):
+        resume_path = local_resume
+        output_path = os.path.join(backend_dir, "data", "processed")
+    else:
+        workspace_dir = os.path.dirname(backend_dir)
+        resume_path = os.path.join(workspace_dir, "data", "resume.pdf")
+        output_path = os.path.join(workspace_dir, "data", "processed")
     ingest_data(resume_path, output_path)

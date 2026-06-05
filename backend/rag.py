@@ -290,6 +290,11 @@ def query_vector_store(query, top_k=5, min_confidence=0.3):
     return top_results, max_confidence
 
 if __name__ == "__main__":
-    workspace_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    processed_dir = os.path.join(workspace_dir, "data", "processed")
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+    local_processed = os.path.join(backend_dir, "data", "processed")
+    if os.path.exists(os.path.join(backend_dir, "data", "resume.pdf")):
+        processed_dir = local_processed
+    else:
+        workspace_dir = os.path.dirname(backend_dir)
+        processed_dir = os.path.join(workspace_dir, "data", "processed")
     build_vector_store(processed_dir)
