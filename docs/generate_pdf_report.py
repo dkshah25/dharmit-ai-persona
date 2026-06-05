@@ -154,7 +154,8 @@ def generate_pdf():
     g_intro = ("<b>Evaluation Dataset & Methodology:</b> Constructed a Golden QA Set containing 50 diverse questions "
                "(15 Resume context, 15 GitHub repository details, 10 Commit history tracking, 5 System architecture details, "
                "and 5 Adversarial inputs). Validation was conducted utilizing an LLM-as-a-Judge framework (LLaMA-3.1-8B-Instant/Gemini-2.5-Flash "
-               "verifying factuality) combined with manual validation. Groundedness checks enforce direct source citations.")
+               "verifying factuality) combined with manual validation. Groundedness checks enforce direct source citations.<br/>"
+               "<b>Grounding Corpus:</b> Resume PDF, 21+ GitHub repositories, README documentation, and commit history metadata.")
     story.append(Paragraph(g_intro, body_style))
     
     # Groundedness Table
@@ -217,14 +218,14 @@ def generate_pdf():
         ],
         [
             Paragraph("<b>#2 Out-of-Corpus Hallucinations</b><br/>LLM fabricates details when asked facts absent from resume/GitHub index.", table_body_style),
-            Paragraph("Retrieval queries returned irrelevant top-k chunks without computing or validating a minimum similarity score.", table_body_style),
-            Paragraph("Configured cosine space in ChromaDB; applied a normalized 0.35 similarity threshold. Directed LLM to refuse out-of-corpus queries.", table_body_style),
+            Paragraph("Retrieval queries returned irrelevant top-k chunks from the local JSON vector store without validating a minimum cosine similarity threshold.", table_body_style),
+            Paragraph("Computed cosine similarity on local TF-IDF embeddings with a normalized 0.35 similarity threshold. Directed LLM to refuse out-of-corpus queries.", table_body_style),
             Paragraph("Explicit refusal behavior is always preferable to fabricated confidence in candidate screening portals.", table_body_bold)
         ],
         [
             Paragraph("<b>#3 Voice Latency / 429 Drops</b><br/>Voice agent experiences hangs/drops during API rate limits under load.", table_body_style),
-            Paragraph("Single model reliance (Groq llama3-8b). Exponential retry sleep blocked execution threads, causing Vapi webhook timeout.", table_body_style),
-            Paragraph("Designed instant rotation fallbacks (Llama-3.1-8B &rarr; Gemma-2-9B &rarr; Mixtral-8x7B) in <code>safe_chat_completion</code>.", table_body_style),
+            Paragraph("Single model reliance (Groq llama-3.1-8b-instant). Exponential retry sleep blocked execution threads, causing Vapi webhook timeout.", table_body_style),
+            Paragraph("Designed instant rotation fallbacks (llama-3.1-8b-instant &rarr; llama-3.3-70b-versatile &rarr; allam-2-7b) in <code>safe_chat_completion</code>.", table_body_style),
             Paragraph("Production voice systems require zero-wait model failovers to prevent call droppage and latency spikes.", table_body_bold)
         ]
     ]
