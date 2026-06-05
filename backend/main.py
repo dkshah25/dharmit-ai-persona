@@ -135,27 +135,29 @@ def get_system_prompt(rag_context: str) -> str:
         "Scheduling Guidelines:\n"
         "- When the user requests to book an interview or schedule a call, you MUST first run `check_available_slots` to fetch open slots.\n"
         "- Present the available slots clearly and ask the user to choose one, while also asking for their name and email address.\n"
-        "- Never invoke the `book_appointment` tool with placeholder or hallucinated times, names, or emails. You must collect the required name, email, and preferred slot time from the user before executing `book_appointment`.\n\n"
+        "- Never invoke the `book_appointment` tool with placeholder or hallucinated times, names, or emails. You must collect the required name, email, and preferred slot time from the user before executing `book_appointment`.\n"
+        "- Once you have collected the user's name, email address, and preferred slot time, you MUST immediately call the `book_appointment` tool. Do not ask the user for further confirmation or details before executing the tool call.\n\n"
         "RAG Context Instructions:\n"
         "- You are provided with retrieved context from Dharmit's resume and GitHub profile below.\n"
-        "- Rely ONLY on the provided context. If the context does not contain the answer to a factual question, you MUST respond exactly with: \"I do not have enough information in my knowledge base to answer that accurately.\"\n"
-        "- Never invent details or assume facts. If a question is outside the scope of the provided data, politely say so using the fallback message.\n\n"
+        "- Rely ONLY on the provided context for answering factual questions about Dharmit's work experience, education, projects, and skills. If the context does not contain the answer to a factual question, you MUST respond exactly with: \"I do not have enough information in my knowledge base to answer that accurately.\"\n"
+        "- Never invent details or assume facts. If a question is outside the scope of the provided data, politely say so using the fallback message.\n"
+        "- IMPORTANT: Conversational replies, greeting messages, and scheduling details (such as names, emails, and slot choices provided by the user to schedule a meeting) are NOT factual questions about Dharmit's background. Do NOT apply the RAG fallback response to scheduling steps, and instead proceed to invoke the booking tool when all information is gathered.\n\n"
         f"--- START RETRIEVED CONTEXT ---\n{rag_context}\n--- END RETRIEVED CONTEXT ---"
     )
 
 async def safe_chat_completion(model, messages, stream=False, temperature=0.3, tools=None, tool_choice=None):
     """
-    Calls openai_client.chat.completions.create with fallback rotation for 429 RateLimitErrors.
+    Calls openai_client.chat.completions.create with fallback rotation for 429 and 400 (failed generation/tool call) errors.
     """
     import openai
     
-    # Define a rotation of fallback models to bypass free-tier rate limits
+    # Define a rotation of fallback models to bypass free-tier rate limits or formatting failures
     models_to_try = [model]
     for fallback in ["llama-3.3-70b-versatile", "allam-2-7b"]:
         if fallback != model and fallback not in models_to_try:
             models_to_try.append(fallback)
             
-    # Try each model in sequence immediately on 429
+    # Try each model in sequence immediately on 429 or 400/tool calling errors
     for current_model in models_to_try:
         try:
             kwargs = {
@@ -172,8 +174,11 @@ async def safe_chat_completion(model, messages, stream=False, temperature=0.3, t
             return await openai_client.chat.completions.create(**kwargs)
         except Exception as e:
             err_str = str(e).lower()
-            if "rate limit" in err_str or "429" in err_str or "limit" in err_str or "quota" in err_str or "503" in err_str or "overloaded" in err_str or isinstance(e, openai.RateLimitError):
-                print(f"[LLM Rate Limit/Overload] Hit error for model {current_model}. Rotating to fallback model...")
+            is_rate_limit = "rate limit" in err_str or "429" in err_str or "limit" in err_str or "quota" in err_str or "503" in err_str or "overloaded" in err_str or isinstance(e, openai.RateLimitError)
+            is_tool_call_fail = "failed to call" in err_str or "failed_generation" in err_str or "400" in err_str or "bad request" in err_str or isinstance(e, openai.BadRequestError)
+            
+            if is_rate_limit or is_tool_call_fail:
+                print(f"[LLM Error] Hit error '{err_str}' for model {current_model}. Rotating to fallback model...")
                 continue
             else:
                 raise e
