@@ -22,7 +22,7 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # Initialize FastAPI App
-app = FastAPI(title="Scaler AI Persona Platform API")
+app = FastAPI(title="AI Persona Platform API")
 
 # Configure CORS
 app.add_middleware(

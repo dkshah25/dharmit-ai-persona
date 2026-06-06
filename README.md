@@ -116,7 +116,7 @@ Measured metrics from our local automated verification suite (`verify_production
 ### 1. Directory Preparation
 Create the `data/` folder in the root directory and place your resume PDF inside, renamed to `resume.pdf`:
 ```text
-d:/scalar ai screening/data/resume.pdf
+data/resume.pdf
 ```
 
 ### 2. Configure Environment
