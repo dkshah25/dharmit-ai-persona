@@ -23,7 +23,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if GROQ_API_KEY:
     JUDGE_API_KEY = GROQ_API_KEY
     JUDGE_BASE_URL = "https://api.groq.com/openai/v1"
-    JUDGE_MODEL = "llama-3.1-8b-instant"
+    JUDGE_MODEL = "qwen/qwen3.6-27b"
     print("[Evals Judge] Initializing Judge with Groq API (100% Free & Fast)")
 elif GEMINI_API_KEY:
     JUDGE_API_KEY = GEMINI_API_KEY

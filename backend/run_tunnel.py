@@ -28,8 +28,40 @@ def update_vapi_assistant(url: str, api_key: str, assistant_id: str):
             print("[Tunnel Wrapper] Successfully updated Vapi Assistant URL in the cloud!")
         else:
             print(f"[Tunnel Wrapper] Failed to update Vapi Assistant (Status {res.status_code}): {res.text}")
+            
+        # Also sync phone numbers assigned to this assistant
+        print("[Tunnel Wrapper] Fetching phone numbers to update server webhooks...")
+        phone_res = requests.get("https://api.vapi.ai/phone-number", headers=headers)
+        if phone_res.status_code == 200:
+            phone_numbers = phone_res.json()
+            for p in phone_numbers:
+                if p.get("assistantId") == assistant_id:
+                    num_id = p.get("id")
+                    num_str = p.get("number")
+                    print(f"[Tunnel Wrapper] Syncing URL for Phone Number {num_str} ({num_id})...")
+                    phone_payload = {
+                        "server": {
+                            "url": f"{url}/api/vapi/custom-llm",
+                            "timeoutSeconds": 20,
+                            "headers": {
+                                "Bypass-Tunnel-Reminder": "true"
+                            }
+                        }
+                    }
+                    patch_res = requests.patch(
+                        f"https://api.vapi.ai/phone-number/{num_id}",
+                        json=phone_payload,
+                        headers=headers
+                    )
+                    if patch_res.status_code == 200:
+                        print(f"[Tunnel Wrapper] Successfully updated Phone Number {num_str} server URL!")
+                    else:
+                        print(f"[Tunnel Wrapper] Failed to update Phone Number {num_str}: {patch_res.text}")
+        else:
+            print(f"[Tunnel Wrapper] Failed to fetch phone numbers: {phone_res.text}")
     except Exception as e:
         print(f"[Tunnel Wrapper] Error calling Vapi API: {e}")
+
 
 def main():
     # Load env keys from .env
@@ -39,8 +71,8 @@ def main():
     port = 8000
     print(f"Starting localtunnel wrapper for port {port}...")
     
-    # We run 'npx localtunnel --port 8000' using cmd.exe on Windows
-    cmd = ["cmd.exe", "/c", f"npx localtunnel --port {port}"]
+    # We run 'npx -y localtunnel --port 8000' using cmd.exe on Windows
+    cmd = ["cmd.exe", "/c", f"npx -y localtunnel --port {port}"]
     
     # File to save the active tunnel URL
     tunnel_file = os.path.join(script_dir, "tunnel_url.txt")

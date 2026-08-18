@@ -40,18 +40,29 @@ if GROQ_API_KEY:
         api_key=GROQ_API_KEY,
         base_url="https://api.groq.com/openai/v1"
     )
-    LLM_MODEL = "llama-3.1-8b-instant"
+    LLM_MODELS = [
+        "llama-3.3-70b-versatile",
+        "openai/gpt-oss-20b",
+        "qwen/qwen3.6-27b",
+        "qwen/qwen3-32b",
+        "openai/gpt-oss-120b"
+    ]
+    LLM_MODEL = LLM_MODELS[0]
 elif GEMINI_API_KEY:
     print("[Server] Initializing Client with Google Gemini API (100% Free)")
     openai_client = openai.AsyncOpenAI(
         api_key=GEMINI_API_KEY,
         base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
     )
+    LLM_MODELS = ["gemini-2.5-flash"]
     LLM_MODEL = "gemini-2.5-flash" # Use 2.5-flash as the fallback model name
 else:
     print("[Server] Initializing Client with OpenAI API")
     openai_client = openai.AsyncOpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+    LLM_MODELS = ["gpt-4o-mini"]
     LLM_MODEL = "gpt-4o-mini"
+
+CURRENT_MODEL_INDEX = 0
 
 # Pydantic schemas
 class ChatMessage(BaseModel):
@@ -148,17 +159,22 @@ def get_system_prompt(rag_context: str) -> str:
 
 async def safe_chat_completion(model, messages, stream=False, temperature=0.3, tools=None, tool_choice=None):
     """
-    Calls openai_client.chat.completions.create with fallback rotation for 429 and 400 (failed generation/tool call) errors.
+    Calls openai_client.chat.completions.create with fallback rotation.
+    Supports streaming, temperature parameters, and tool execution.
     """
+    global CURRENT_MODEL_INDEX
     import openai
     
-    # Define a rotation of fallback models to bypass free-tier rate limits or formatting failures
-    models_to_try = [model]
-    for fallback in ["llama-3.3-70b-versatile", "allam-2-7b"]:
-        if fallback != model and fallback not in models_to_try:
-            models_to_try.append(fallback)
-            
-    # Try each model in sequence immediately on 429 or 400/tool calling errors
+    # Generate the rotation sequence based on LLM_MODELS list and CURRENT_MODEL_INDEX
+    models_to_try = []
+    for i in range(len(LLM_MODELS)):
+        idx = (CURRENT_MODEL_INDEX + i) % len(LLM_MODELS)
+        models_to_try.append(LLM_MODELS[idx])
+        
+    # Always ensure the model passed in by caller is tried as well if not already in list
+    if model not in models_to_try:
+        models_to_try.append(model)
+        
     for current_model in models_to_try:
         try:
             kwargs = {
@@ -177,20 +193,31 @@ async def safe_chat_completion(model, messages, stream=False, temperature=0.3, t
             err_str = str(e).lower()
             is_rate_limit = "rate limit" in err_str or "429" in err_str or "limit" in err_str or "quota" in err_str or "503" in err_str or "overloaded" in err_str or isinstance(e, openai.RateLimitError)
             is_tool_call_fail = "failed to call" in err_str or "failed_generation" in err_str or "400" in err_str or "bad request" in err_str or isinstance(e, openai.BadRequestError)
+            is_not_found = (
+                "404" in err_str
+                or "model_not_found" in err_str
+                or "does not exist" in err_str
+                or "access" in err_str
+                or isinstance(e, openai.NotFoundError)
+            )
             
-            if is_rate_limit or is_tool_call_fail:
-                print(f"[LLM Error] Hit error '{err_str}' for model {current_model}. Rotating to fallback model...")
+            if is_rate_limit or is_tool_call_fail or is_not_found:
+                print(f"[LLM Error] Hit error '{err_str}' for model {current_model}. Rotating fallback model index...")
+                if current_model in LLM_MODELS:
+                    idx_in_list = LLM_MODELS.index(current_model)
+                    CURRENT_MODEL_INDEX = (idx_in_list + 1) % len(LLM_MODELS)
                 continue
             else:
                 raise e
                 
-    # If all models in the rotation hit 429, fall back to waiting/retry loop on the original model
+    # If all models in the rotation hit errors, fall back to waiting/retry loop on the current active model
     print("[LLM Rate Limit] All fallback models rate-limited/overloaded. Falling back to wait-and-retry loop...")
     max_retries = 3
     for attempt in range(max_retries):
+        current_model = LLM_MODELS[CURRENT_MODEL_INDEX]
         try:
             kwargs = {
-                "model": model,
+                "model": current_model,
                 "messages": messages,
                 "stream": stream,
                 "temperature": temperature
@@ -205,7 +232,7 @@ async def safe_chat_completion(model, messages, stream=False, temperature=0.3, t
             err_str = str(e).lower()
             if "rate limit" in err_str or "429" in err_str or "limit" in err_str or "quota" in err_str or "503" in err_str or "overloaded" in err_str or isinstance(e, openai.RateLimitError):
                 wait_time = 10 * (attempt + 1)
-                print(f"[LLM Rate Limit Backup] Hit error for model {model}. Waiting {wait_time}s before retry...")
+                print(f"[LLM Rate Limit Backup] Hit error for model {current_model}. Waiting {wait_time}s before retry...")
                 await asyncio.sleep(wait_time)
             else:
                 raise e
@@ -546,7 +573,8 @@ async def vapi_custom_llm(request: Request):
     last_user_message = ""
     for msg in reversed(vapi_messages):
         if msg.get("role") == "user":
-            last_user_message = msg.get("content", "")
+            content = msg.get("content")
+            last_user_message = content if isinstance(content, str) else ""
             break
             
     # 1. Guardrails
@@ -763,4 +791,4 @@ async def run_evals_trigger():
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
-    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
