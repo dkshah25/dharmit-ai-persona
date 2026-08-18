@@ -165,6 +165,26 @@ def ingest_data(resume_pdf_path, output_dir):
         with open(os.path.join(output_dir, "resume.json"), "w", encoding="utf-8") as f:
             json.dump(resume_data, f, indent=2)
         print("Resume parsed and saved.")
+        
+    # 1.5 Process Candidate Profile
+    profile_path = os.path.join(os.path.dirname(resume_pdf_path), "candidate_profile.md")
+    if os.path.exists(profile_path):
+        try:
+            with open(profile_path, "r", encoding="utf-8") as f:
+                profile_text = f.read()
+            profile_data = {
+                "source": "candidate_profile",
+                "content": profile_text,
+                "metadata": {
+                    "title": "Candidate Profile of Dharmit Shah",
+                    "source": "candidate_profile"
+                }
+            }
+            with open(os.path.join(output_dir, "candidate_profile.json"), "w", encoding="utf-8") as f:
+                json.dump(profile_data, f, indent=2)
+            print("Candidate profile parsed and saved.")
+        except Exception as e:
+            print(f"Error parsing candidate profile: {e}")
     
     # 2. Process GitHub
     repos = fetch_repositories(GITHUB_USERNAME)

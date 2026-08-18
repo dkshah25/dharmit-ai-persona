@@ -33,36 +33,38 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize Client adaptively: Use free Groq or Gemini if present (Groq is preferred here since user's Gemini key has generateContent limit 0)
-if GROQ_API_KEY:
-    print("[Server] Initializing Client with Groq API (100% Free & Low Latency)")
-    openai_client = openai.AsyncOpenAI(
-        api_key=GROQ_API_KEY,
-        base_url="https://api.groq.com/openai/v1"
-    )
-    LLM_MODELS = [
-        "llama-3.3-70b-versatile",
-        "openai/gpt-oss-20b",
-        "qwen/qwen3.6-27b",
-        "qwen/qwen3-32b",
-        "openai/gpt-oss-120b"
-    ]
-    LLM_MODEL = LLM_MODELS[0]
-elif GEMINI_API_KEY:
-    print("[Server] Initializing Client with Google Gemini API (100% Free)")
-    openai_client = openai.AsyncOpenAI(
-        api_key=GEMINI_API_KEY,
-        base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-    )
-    LLM_MODELS = ["gemini-2.5-flash"]
-    LLM_MODEL = "gemini-2.5-flash" # Use 2.5-flash as the fallback model name
-else:
-    print("[Server] Initializing Client with OpenAI API")
-    openai_client = openai.AsyncOpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
-    LLM_MODELS = ["gpt-4o-mini"]
-    LLM_MODEL = "gpt-4o-mini"
+import time
 
-CURRENT_MODEL_INDEX = 0
+# Initialize Clients adaptively
+groq_client = openai.AsyncOpenAI(api_key=GROQ_API_KEY, base_url="https://api.groq.com/openai/v1") if GROQ_API_KEY else None
+gemini_client = openai.AsyncOpenAI(api_key=GEMINI_API_KEY, base_url="https://generativelanguage.googleapis.com/v1beta/openai/") if GEMINI_API_KEY else None
+openai_client_main = openai.AsyncOpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+
+# Set a primary client reference for backward compatibility checks
+openai_client = groq_client or gemini_client or openai_client_main
+
+# Provider cooldown tracker (timestamp when cooldown expires)
+provider_cooldowns = {
+    "groq": 0.0,
+    "gemini": 0.0,
+    "openai": 0.0
+}
+
+COOLDOWN_DURATION = 120.0  # 2 minutes cooldown when quota/rate-limit hit
+
+GROQ_MODELS = [
+    "llama-3.3-70b-versatile",
+    "openai/gpt-oss-20b",
+    "qwen/qwen3.6-27b",
+    "qwen/qwen3-32b",
+    "openai/gpt-oss-120b"
+]
+CURRENT_GROQ_MODEL_INDEX = 0
+
+GEMINI_MODELS = ["gemini-2.5-flash"]
+OPENAI_MODELS = ["gpt-4o-mini"]
+
+LLM_MODEL = GROQ_MODELS[0] if GROQ_API_KEY else (GEMINI_MODELS[0] if GEMINI_API_KEY else OPENAI_MODELS[0])
 
 # Pydantic schemas
 class ChatMessage(BaseModel):
@@ -169,87 +171,156 @@ def get_system_prompt(rag_context: str) -> str:
         f"--- START RETRIEVED CONTEXT ---\n{rag_context}\n--- END RETRIEVED CONTEXT ---"
     )
 
-async def safe_chat_completion(model, messages, stream=False, temperature=0.3, tools=None, tool_choice=None):
+async def safe_chat_completion(model: str, messages: List[Dict[str, Any]], stream: bool = False, temperature: float = 0.3, tools: Optional[List[Dict[str, Any]]] = None, tool_choice: Optional[str] = None):
     """
-    Calls openai_client.chat.completions.create with fallback rotation.
-    Supports streaming, temperature parameters, and tool execution.
+    Calls chat.completions.create with multi-provider fallback (Groq -> Gemini -> OpenAI).
+    Detects 429 quota/rate limit errors and switches providers immediately.
+    Applies cooldowns for exhausted providers.
     """
-    global CURRENT_MODEL_INDEX
+    global CURRENT_GROQ_MODEL_INDEX
     import openai
     
-    # Generate the rotation sequence based on LLM_MODELS list and CURRENT_MODEL_INDEX
-    models_to_try = []
-    for i in range(len(LLM_MODELS)):
-        idx = (CURRENT_MODEL_INDEX + i) % len(LLM_MODELS)
-        models_to_try.append(LLM_MODELS[idx])
+    current_time = time.time()
+    
+    # 1. Determine active providers not on cooldown
+    providers = []
+    if GROQ_API_KEY and provider_cooldowns["groq"] <= current_time:
+        providers.append("groq")
+    if GEMINI_API_KEY and provider_cooldowns["gemini"] <= current_time:
+        providers.append("gemini")
+    if OPENAI_API_KEY and provider_cooldowns["openai"] <= current_time:
+        providers.append("openai")
         
-    # Always ensure the model passed in by caller is tried as well if not already in list
-    if model not in models_to_try:
-        models_to_try.append(model)
-        
-    for current_model in models_to_try:
-        try:
-            kwargs = {
-                "model": current_model,
-                "messages": messages,
-                "stream": stream,
-                "temperature": temperature
-            }
-            if tools is not None:
-                kwargs["tools"] = tools
-            if tool_choice is not None:
-                kwargs["tool_choice"] = tool_choice
-                
-            return await openai_client.chat.completions.create(**kwargs)
-        except Exception as e:
-            err_str = str(e).lower()
-            is_rate_limit = "rate limit" in err_str or "429" in err_str or "limit" in err_str or "quota" in err_str or "503" in err_str or "overloaded" in err_str or isinstance(e, openai.RateLimitError)
-            is_tool_call_fail = "failed to call" in err_str or "failed_generation" in err_str or "400" in err_str or "bad request" in err_str or isinstance(e, openai.BadRequestError)
-            is_not_found = (
-                "404" in err_str
-                or "model_not_found" in err_str
-                or "does not exist" in err_str
-                or "access" in err_str
-                or isinstance(e, openai.NotFoundError)
-            )
+    # If all configured providers are on cooldown, reset cooldowns to avoid total failure
+    if not providers:
+        print("[LLM Alert] All providers on cooldown. Resetting cooldowns.")
+        if GROQ_API_KEY:
+            providers.append("groq")
+        if GEMINI_API_KEY:
+            providers.append("gemini")
+        if OPENAI_API_KEY:
+            providers.append("openai")
             
-            if is_rate_limit or is_tool_call_fail or is_not_found:
-                print(f"[LLM Error] Hit error '{err_str}' for model {current_model}. Rotating fallback model index...")
-                if current_model in LLM_MODELS:
-                    idx_in_list = LLM_MODELS.index(current_model)
-                    CURRENT_MODEL_INDEX = (idx_in_list + 1) % len(LLM_MODELS)
-                continue
-            else:
-                raise e
+    if not providers:
+        raise HTTPException(
+            status_code=503,
+            detail="The AI service is temporarily switching providers. Please try again."
+        )
+        
+    for provider in providers:
+        if provider == "groq":
+            # Groq model rotation sequence
+            models_to_try = []
+            for i in range(len(GROQ_MODELS)):
+                idx = (CURRENT_GROQ_MODEL_INDEX + i) % len(GROQ_MODELS)
+                models_to_try.append(GROQ_MODELS[idx])
                 
-    # If all models in the rotation hit errors, fall back to waiting/retry loop on the current active model
-    print("[LLM Rate Limit] All fallback models rate-limited/overloaded. Falling back to wait-and-retry loop...")
-    max_retries = 3
-    for attempt in range(max_retries):
-        current_model = LLM_MODELS[CURRENT_MODEL_INDEX]
-        try:
-            kwargs = {
-                "model": current_model,
-                "messages": messages,
-                "stream": stream,
-                "temperature": temperature
-            }
-            if tools is not None:
-                kwargs["tools"] = tools
-            if tool_choice is not None:
-                kwargs["tool_choice"] = tool_choice
-                
-            return await openai_client.chat.completions.create(**kwargs)
-        except Exception as e:
-            err_str = str(e).lower()
-            if "rate limit" in err_str or "429" in err_str or "limit" in err_str or "quota" in err_str or "503" in err_str or "overloaded" in err_str or isinstance(e, openai.RateLimitError):
-                wait_time = 10 * (attempt + 1)
-                print(f"[LLM Rate Limit Backup] Hit error for model {current_model}. Waiting {wait_time}s before retry...")
-                await asyncio.sleep(wait_time)
-            else:
-                raise e
-                
-    raise HTTPException(status_code=429, detail="LLM rate limits exceeded for all fallback models.")
+            for current_model in models_to_try:
+                try:
+                    kwargs = {
+                        "model": current_model,
+                        "messages": messages,
+                        "stream": stream,
+                        "temperature": temperature
+                    }
+                    if tools is not None:
+                        kwargs["tools"] = tools
+                    if tool_choice is not None:
+                        kwargs["tool_choice"] = tool_choice
+                        
+                    res = await groq_client.chat.completions.create(**kwargs)
+                    CURRENT_GROQ_MODEL_INDEX = GROQ_MODELS.index(current_model)
+                    return res
+                except Exception as e:
+                    err_str = str(e).lower()
+                    is_rate_limit = (
+                        "rate limit" in err_str or "429" in err_str or "limit" in err_str 
+                        or "quota" in err_str or "503" in err_str or "overloaded" in err_str 
+                        or "insufficient_quota" in err_str
+                    )
+                    is_not_found = (
+                        "404" in err_str or "model_not_found" in err_str 
+                        or "does not exist" in err_str or "access" in err_str
+                    )
+                    
+                    if is_rate_limit:
+                        print(f"[LLM Fallback Alert] Groq model {current_model} rate limited. Putting Groq on cooldown and switching provider immediately.")
+                        provider_cooldowns["groq"] = time.time() + COOLDOWN_DURATION
+                        # Break Groq model loop immediately to switch provider
+                        break
+                    elif is_not_found:
+                        print(f"[LLM Warning] Groq model {current_model} not found/accessible. Rotating to next model.")
+                        CURRENT_GROQ_MODEL_INDEX = (GROQ_MODELS.index(current_model) + 1) % len(GROQ_MODELS)
+                        continue
+                    else:
+                        print(f"[LLM Warning] Unexpected Groq error for model {current_model}: {e}")
+                        break
+                        
+        elif provider == "gemini":
+            for current_model in GEMINI_MODELS:
+                try:
+                    kwargs = {
+                        "model": current_model,
+                        "messages": messages,
+                        "stream": stream,
+                        "temperature": temperature
+                    }
+                    if tools is not None:
+                        kwargs["tools"] = tools
+                    if tool_choice is not None:
+                        kwargs["tool_choice"] = tool_choice
+                        
+                    return await gemini_client.chat.completions.create(**kwargs)
+                except Exception as e:
+                    err_str = str(e).lower()
+                    is_rate_limit = (
+                        "rate limit" in err_str or "429" in err_str or "limit" in err_str 
+                        or "quota" in err_str or "503" in err_str or "overloaded" in err_str 
+                        or "insufficient_quota" in err_str
+                    )
+                    if is_rate_limit:
+                        print(f"[LLM Fallback Alert] Gemini rate limited. Putting Gemini on cooldown.")
+                        provider_cooldowns["gemini"] = time.time() + COOLDOWN_DURATION
+                        break
+                    else:
+                        print(f"[LLM Warning] Unexpected Gemini error: {e}")
+                        break
+                        
+        elif provider == "openai":
+            for current_model in OPENAI_MODELS:
+                try:
+                    kwargs = {
+                        "model": current_model,
+                        "messages": messages,
+                        "stream": stream,
+                        "temperature": temperature
+                    }
+                    if tools is not None:
+                        kwargs["tools"] = tools
+                    if tool_choice is not None:
+                        kwargs["tool_choice"] = tool_choice
+                        
+                    return await openai_client_main.chat.completions.create(**kwargs)
+                except Exception as e:
+                    err_str = str(e).lower()
+                    is_rate_limit = (
+                        "rate limit" in err_str or "429" in err_str or "limit" in err_str 
+                        or "quota" in err_str or "503" in err_str or "overloaded" in err_str 
+                        or "insufficient_quota" in err_str
+                    )
+                    if is_rate_limit:
+                        print(f"[LLM Fallback Alert] OpenAI rate limited. Putting OpenAI on cooldown.")
+                        provider_cooldowns["openai"] = time.time() + COOLDOWN_DURATION
+                        break
+                    else:
+                        print(f"[LLM Warning] Unexpected OpenAI error: {e}")
+                        break
+                        
+    # If all provider attempts fail, raise the switching provider exception
+    raise HTTPException(
+        status_code=503,
+        detail="The AI service is temporarily switching providers. Please try again."
+    )
 
 async def handle_tool_execution(name: str, arguments: str) -> Dict[str, Any]:
     try:
@@ -422,7 +493,12 @@ async def chat_endpoint(req: ChatRequest):
             rag_context_list.append(r["content"])
             # Track sources (prevent duplicates)
             source_meta = r["metadata"]
-            source_name = "Resume" if source_meta.get("source") == "resume" else f"GitHub: {source_meta.get('repository')}"
+            if source_meta.get("source") == "resume":
+                source_name = "Resume"
+            elif source_meta.get("source") == "candidate_profile":
+                source_name = "Candidate Profile"
+            else:
+                source_name = f"GitHub: {source_meta.get('repository')}"
             url = source_meta.get("url", "")
             if {"name": source_name, "url": url} not in sources:
                 sources.append({"name": source_name, "url": url})
@@ -557,6 +633,8 @@ async def chat_endpoint(req: ChatRequest):
                 return JSONResponse(content={"content": second_response.choices[0].message.content, "sources": sources})
                 
             return JSONResponse(content={"content": message.content, "sources": sources})
+        except HTTPException as he:
+            raise he
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
@@ -759,6 +837,8 @@ async def vapi_custom_llm(request: Request):
                 return JSONResponse(content=second_response.model_dump())
                 
             return JSONResponse(content=response.model_dump())
+        except HTTPException as he:
+            return JSONResponse(status_code=he.status_code, content={"error": he.detail})
         except Exception as e:
             return JSONResponse(status_code=500, content={"error": str(e)})
 

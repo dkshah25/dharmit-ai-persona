@@ -171,6 +171,31 @@ def build_vector_store(processed_dir):
                 documents.append(doc)
             print(f"Prepared {len(chunks)} chunks from resume.")
             
+    # 1.5 Load Candidate Profile
+    profile_path = os.path.join(processed_dir, "candidate_profile.json")
+    if os.path.exists(profile_path):
+        with open(profile_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            profile_text = data.get("content", "")
+            
+            splitter = RecursiveCharacterTextSplitter(
+                chunk_size=600,
+                chunk_overlap=100
+            )
+            chunks = splitter.split_text(profile_text)
+            for idx, chunk in enumerate(chunks):
+                doc = Document(
+                    page_content=chunk,
+                    metadata={
+                        "source": "candidate_profile",
+                        "chunk_idx": idx,
+                        "title": "Dharmit Shah Candidate Profile Details",
+                        "timestamp": datetime.now().isoformat()
+                    }
+                )
+                documents.append(doc)
+            print(f"Prepared {len(chunks)} chunks from candidate profile.")
+            
     # 2. Load GitHub repos
     for filename in os.listdir(processed_dir):
         if filename.startswith("repo_") and filename.endswith(".json"):
@@ -334,10 +359,10 @@ def query_vector_store(query, top_k=5, min_confidence=None):
     # 5. Determine active min_confidence threshold:
     # Default to 0.35 for OpenAI Embeddings, 0.30 for local TF-IDF
     if min_confidence is None:
-        if os.getenv("OPENAI_API_KEY"):
-            min_confidence = 0.35
-        else:
+        if isinstance(embeddings_model, TFIDFEmbeddings):
             min_confidence = 0.30
+        else:
+            min_confidence = 0.35
             
     # Filter by confidence threshold
     filtered_results = [r for r in scored_results if r["confidence"] >= min_confidence]

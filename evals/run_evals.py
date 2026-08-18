@@ -134,7 +134,7 @@ async def run_single_test(test_case, sem, client):
                     response = await local_client.post("http://127.0.0.1:8000/api/chat", json=payload)
                 if response.status_code == 200:
                     break
-                elif response.status_code in (429, 500):
+                elif response.status_code in (429, 500, 503):
                     wait_time = 15 * (attempt + 1)
                     print(f"[Evals HTTP {response.status_code}] Waiting {wait_time}s before retry (attempt {attempt+1}/{max_retries}) for question: '{question[:30]}...'")
                     await asyncio.sleep(wait_time)
