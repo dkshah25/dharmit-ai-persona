@@ -28,7 +28,7 @@ graph TD
         MainAPI["API Server (main.py)"]:::process
         RAG["Retrieval Layer (rag.py)"]:::process
         Guard["Guardrails (guardrails.py)"]:::process
-        LLM["Groq Client (Llama 3.1 8B)"]:::process
+        LLM["Groq Client (Qwen 3.6 27B)"]:::process
     end
 
     %% Channels

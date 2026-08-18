@@ -236,7 +236,13 @@ async def main():
     
     # 1. Load questions
     eval_dir = os.path.dirname(os.path.abspath(__file__))
-    questions_path = os.path.join(eval_dir, "test_questions.json")
+    if "--subset" in sys.argv:
+        questions_path = os.path.join(eval_dir, "test_questions_subset.json")
+        print("[Evals] Running on representative 12-question subset.")
+    else:
+        questions_path = os.path.join(eval_dir, "test_questions.json")
+        print("[Evals] Running on full 149-question dataset.")
+        
     results_path = os.path.join(eval_dir, "results.json")
     
     if not os.path.exists(questions_path):

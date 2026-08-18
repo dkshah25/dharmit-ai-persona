@@ -46,6 +46,19 @@ def fetch_repositories(username):
     return repos
 
 def fetch_readme(username, repo_name):
+    # If this is the current repository, load local README from workspace root first
+    if repo_name == "dharmit-ai-persona":
+        backend_dir = os.path.dirname(os.path.abspath(__file__))
+        workspace_dir = os.path.dirname(backend_dir)
+        local_readme = os.path.join(workspace_dir, "README.md")
+        if os.path.exists(local_readme):
+            try:
+                with open(local_readme, "r", encoding="utf-8") as f:
+                    print(f"[Ingestion] Using local README.md for current repository {repo_name}")
+                    return f.read()
+            except Exception as e:
+                print(f"[Ingestion Warning] Failed to read local README for {repo_name}: {e}")
+
     url = f"https://api.github.com/repos/{username}/{repo_name}/readme"
     response = github_request_get(url)
     if response.status_code != 200:
@@ -126,6 +139,16 @@ def parse_resume(pdf_path):
         return ""
 
 def ingest_data(resume_pdf_path, output_dir):
+    import shutil
+    # Wipe old processed JSON files to prevent stale chunks or duplicate indexes
+    if os.path.exists(output_dir):
+        print(f"Wiping old processed data directory at {output_dir}...")
+        try:
+            shutil.rmtree(output_dir)
+            print("Old processed directory cleared successfully.")
+        except Exception as e:
+            print(f"Warning: Failed to clear old processed folder: {e}")
+            
     os.makedirs(output_dir, exist_ok=True)
     
     # 1. Process Resume

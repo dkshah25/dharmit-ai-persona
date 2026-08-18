@@ -56,8 +56,8 @@ The platform uses a decoupled frontend and backend. The local FastAPI server han
 - **Frontend**: Next.js 16 (React 19), TypeScript, Tailwind CSS, Lucide icons
 - **Voice Platform**: Vapi Webhooks (Custom LLM Integration)
 - **Scheduling**: Cal.com REST API
-- **Retrieval Engine**: Local TF-IDF Vector Store & Cosine Similarity
-- **LLMs**: Groq API (Llama 3.1 8B Instant, Llama 3.3 70B Versatile fallback)
+- **Retrieval Engine**: Local Semantic Vector Store (OpenAI text-embedding-3-small / local TF-IDF fallback)
+- **LLMs**: Groq API (Qwen 3.6 27B Primary, with OpenAI GPT-OSS model rotation fallback)
 
 ---
 

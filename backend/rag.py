@@ -80,7 +80,43 @@ class TFIDFEmbeddings(Embeddings):
             return []
         return self.embed_documents([text])[0]
 
+def is_relevant_readme_chunk(chunk_text: str) -> bool:
+    """
+    Returns True if the chunk is relevant to engineering and architecture details,
+    and does not contain purely boilerplate developer setup, installation, or license text.
+    """
+    bad_keywords = [
+        "license", "contributing", "getting started", 
+        "installation", "install", "how to run", 
+        "prerequisites", "setup", "quickstart", "run locally"
+    ]
+    chunk_lower = chunk_text.lower()
+    
+    # Check if the chunk starts with or focuses on installation/licensing sections
+    for kw in bad_keywords:
+        if f"# {kw}" in chunk_lower or f"## {kw}" in chunk_lower or f"### {kw}" in chunk_lower:
+            return False
+            
+    # Also skip if it contains a high density of purely command-line installation prompts
+    if "pip install" in chunk_lower and "git clone" in chunk_lower:
+        return False
+    if "npm install" in chunk_lower and "npm run dev" in chunk_lower:
+        return False
+        
+    return True
+
 def get_embeddings():
+    if os.getenv("OPENAI_API_KEY"):
+        from langchain_openai import OpenAIEmbeddings
+        try:
+            model = OpenAIEmbeddings(model="text-embedding-3-small")
+            # Run a dummy query to test API key quota availability
+            model.embed_query("test query")
+            print("[Embeddings] Successfully initialized OpenAI semantic embeddings.")
+            return model
+        except Exception as e:
+            print(f"[Embeddings Warning] OpenAI Embeddings API test failed (e.g. quota exceeded): {e}. Falling back to local TF-IDF embeddings.")
+            
     vocab_file = os.path.join(DB_DIR, "tfidf_vocab.json")
     if os.path.exists(vocab_file):
         return TFIDFEmbeddings.load(vocab_file)
@@ -92,6 +128,7 @@ def build_vector_store(processed_dir):
     and index them into ChromaDB.
     """
     print("Building vector store...")
+    from datetime import datetime
     
     # Safety Check: Wipe old database directory to prevent vector dimension mismatch
     if os.path.exists(DB_DIR):
@@ -127,7 +164,8 @@ def build_vector_store(processed_dir):
                     metadata={
                         "source": "resume",
                         "chunk_idx": idx,
-                        "title": "Dharmit Shah Resume Details"
+                        "title": "Dharmit Shah Resume Details",
+                        "timestamp": datetime.now().isoformat()
                     }
                 )
                 documents.append(doc)
@@ -173,7 +211,8 @@ def build_vector_store(processed_dir):
                         "url": url,
                         "type": "overview",
                         "languages": ", ".join(languages),
-                        "topics": ", ".join(topics)
+                        "topics": ", ".join(topics),
+                        "timestamp": datetime.now().isoformat()
                     }
                 )
                 documents.append(overview_doc)
@@ -186,7 +225,12 @@ def build_vector_store(processed_dir):
                         chunk_overlap=120
                     )
                     readme_chunks = splitter.split_text(readme)
+                    skipped_chunks = 0
                     for idx, chunk in enumerate(readme_chunks):
+                        # Filter out installation and boilerplate chunks
+                        if not is_relevant_readme_chunk(chunk):
+                            skipped_chunks += 1
+                            continue
                         readme_chunk_text = f"Repository: {repo_name} - README context:\n{chunk}"
                         doc = Document(
                             page_content=readme_chunk_text,
@@ -195,14 +239,16 @@ def build_vector_store(processed_dir):
                                 "repository": repo_name,
                                 "url": url,
                                 "type": "readme",
-                                "chunk_idx": idx
+                                "chunk_idx": idx,
+                                "languages": ", ".join(languages),
+                                "timestamp": datetime.now().isoformat()
                             }
                         )
                         documents.append(doc)
-                    print(f"Prepared {len(readme_chunks)} README chunks for repo: {repo_name}")
+                    print(f"Prepared {len(readme_chunks) - skipped_chunks} README chunks for repo: {repo_name} (skipped {skipped_chunks} boilerplate chunks)")
                 else:
                     print(f"No README content for repo: {repo_name}")
-
+ 
     if not documents:
         print("No documents to index.")
         return False
@@ -210,14 +256,16 @@ def build_vector_store(processed_dir):
     print(f"Total structured documents prepared: {len(documents)}. Embedding and indexing...")
     
     # Compute embeddings for all prepared documents
-    embeddings_model = TFIDFEmbeddings()
+    embeddings_model = get_embeddings()
     texts = [doc.page_content for doc in documents]
-    embeddings_model.fit(texts)
     
-    # Save the TF-IDF vocabulary and IDF values
-    vocab_file = os.path.join(DB_DIR, "tfidf_vocab.json")
-    os.makedirs(DB_DIR, exist_ok=True)
-    embeddings_model.save(vocab_file)
+    if isinstance(embeddings_model, TFIDFEmbeddings):
+        print("Fitting TF-IDF Embeddings model...")
+        embeddings_model.fit(texts)
+        # Save the TF-IDF vocabulary and IDF values
+        vocab_file = os.path.join(DB_DIR, "tfidf_vocab.json")
+        os.makedirs(DB_DIR, exist_ok=True)
+        embeddings_model.save(vocab_file)
     
     print(f"Generating embeddings for {len(texts)} chunks...")
     vectors = embeddings_model.embed_documents(texts)
@@ -239,7 +287,7 @@ def build_vector_store(processed_dir):
     print(f"Vector store build successfully completed. Saved to {db_file}")
     return True
 
-def query_vector_store(query, top_k=5, min_confidence=0.3):
+def query_vector_store(query, top_k=5, min_confidence=None):
     """
     Queries the pure-python vector store.
     Returns list of matches. Match includes document content, metadata, and confidence score.
@@ -283,8 +331,18 @@ def query_vector_store(query, top_k=5, min_confidence=0.3):
     # 4. Sort by similarity in descending order
     scored_results.sort(key=lambda x: x["confidence"], reverse=True)
     
-    # 5. Filter top_k
-    top_results = scored_results[:top_k]
+    # 5. Determine active min_confidence threshold:
+    # Default to 0.35 for OpenAI Embeddings, 0.30 for local TF-IDF
+    if min_confidence is None:
+        if os.getenv("OPENAI_API_KEY"):
+            min_confidence = 0.35
+        else:
+            min_confidence = 0.30
+            
+    # Filter by confidence threshold
+    filtered_results = [r for r in scored_results if r["confidence"] >= min_confidence]
+    top_results = filtered_results[:top_k]
+    
     max_confidence = top_results[0]["confidence"] if top_results else 0.0
     
     return top_results, max_confidence
